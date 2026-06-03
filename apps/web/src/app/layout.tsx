@@ -3,8 +3,8 @@ import './globals.css'
 import AppShell from '@/components/app-shell'
 
 export const metadata: Metadata = {
-  title: 'L Harness',
-  description: 'L Harness 管理画面',
+  title: 'プロラボ LINE統合基盤',
+  description: 'プロラボ LINE統合基盤 管理画面',
 }
 
 export default function RootLayout({
