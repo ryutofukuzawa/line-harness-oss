@@ -123,7 +123,7 @@ webhook.post('/webhook', async (c) => {
   const processingPromise = (async () => {
     for (const event of body.events) {
       try {
-        await handleEvent(db, lineClient, event, channelAccessToken, matchedAccountId, c.env.WORKER_URL || new URL(c.req.url).origin, c.env.LIFF_URL, c.env.IMAGES);
+        await handleEvent(db, lineClient, event, channelAccessToken, matchedAccountId, c.env.WORKER_URL || new URL(c.req.url).origin, c.env.LIFF_URL, c.env.IMAGES, c.env);
       } catch (err) {
         console.error('Error handling webhook event:', err);
       }
@@ -144,6 +144,7 @@ async function handleEvent(
   workerUrl?: string,
   liffUrl?: string,
   r2?: R2Bucket,
+  riskEnv?: { ANTHROPIC_API_KEY?: string; SLACK_WEBHOOK_URL?: string },
 ): Promise<void> {
   if (event.type === 'follow') {
     const userId =
@@ -482,6 +483,40 @@ async function handleEvent(
       )
       .bind(logId, friend.id, incomingText, now)
       .run();
+
+    // ── プロラボ独自: 個別やりとりのAIリスク検知 → 管理者アラート ──
+    // 受信テキストをAI(またはルールベース)で分類し、深刻度3以上なら risk_alerts に記録。
+    // ベストエフォート（失敗してもメッセージ処理は継続）。
+    try {
+      const { classifyRisk, notifySlack, RISK_LABEL } = await import('../services/risk-classify.js');
+      const verdict = await classifyRisk(incomingText, riskEnv ?? {});
+      if (verdict.risk !== 'none' && verdict.severity >= 3) {
+        await db
+          .prepare(
+            `INSERT INTO risk_alerts (id, friend_id, line_account_id, message_id, text, risk, severity, reason, live, status, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'open', ?)`,
+          )
+          .bind(
+            crypto.randomUUID(),
+            friend.id,
+            lineAccountId,
+            logId,
+            incomingText,
+            verdict.risk,
+            verdict.severity,
+            verdict.reason,
+            verdict.live ? 1 : 0,
+            now,
+          )
+          .run();
+        await notifySlack(
+          riskEnv ?? {},
+          `🚨 AIリスク検知: ${RISK_LABEL[verdict.risk]}（深刻度${verdict.severity}）\n「${incomingText}」\n根拠: ${verdict.reason}`,
+        );
+      }
+    } catch (err) {
+      console.error('risk-classify hook failed', err);
+    }
 
     // Cross-account trigger: send message from another account via UUID
     if (incomingText === '体験を完了する' && lineAccountId) {

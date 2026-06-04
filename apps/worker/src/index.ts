@@ -68,6 +68,7 @@ import events from './routes/events.js';
 import { trafficPools } from './routes/traffic-pools.js';
 import { meetCallback } from './routes/meet-callback.js';
 import { messageTemplates } from './routes/message-templates.js';
+import { riskAlerts } from './routes/risk-alerts.js';
 import dedupPreview from './routes/dedup-preview.js';
 import { profileRefresh } from './routes/profile-refresh.js';
 import { richMenuGroups } from './routes/rich-menu-groups.js';
@@ -82,6 +83,9 @@ export type Env = {
     LINE_CHANNEL_SECRET: string;
     LINE_CHANNEL_ACCESS_TOKEN: string;
     API_KEY: string;
+    // プロラボ独自: AIリスク検知（任意。未設定ならルールベース判定にフォールバック）
+    ANTHROPIC_API_KEY?: string;
+    SLACK_WEBHOOK_URL?: string;
     LEGACY_API_KEY?: string;
     LIFF_URL: string;
     LINE_CHANNEL_ID: string;
@@ -167,6 +171,7 @@ app.route('/', events);
 app.route('/', accountSettings);
 app.route('/', meetCallback);
 app.route('/', messageTemplates);
+app.route('/', riskAlerts);
 app.route('/', dedupPreview);
 app.route('/', profileRefresh);
 app.route('/', richMenuGroups);

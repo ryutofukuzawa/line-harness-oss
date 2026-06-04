@@ -836,3 +836,21 @@ CREATE TABLE IF NOT EXISTS rich_menu_areas (
 CREATE INDEX IF NOT EXISTS idx_rich_menu_pages_group    ON rich_menu_pages(group_id, order_index);
 CREATE INDEX IF NOT EXISTS idx_rich_menu_areas_page     ON rich_menu_areas(page_id);
 CREATE INDEX IF NOT EXISTS idx_rich_menu_groups_account ON rich_menu_groups(account_id, status);
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: AIリスクアラート（個別やりとりのリスク検知）
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS risk_alerts (
+  id              TEXT PRIMARY KEY,
+  friend_id       TEXT REFERENCES friends (id) ON DELETE CASCADE,
+  line_account_id TEXT,
+  message_id      TEXT,
+  text            TEXT NOT NULL,
+  risk            TEXT NOT NULL CHECK (risk IN ('none','churn','complaint','neglect')),
+  severity        INTEGER NOT NULL DEFAULT 1,
+  reason          TEXT,
+  live            INTEGER NOT NULL DEFAULT 0,
+  status          TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','resolved')),
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
+);
+CREATE INDEX IF NOT EXISTS idx_risk_alerts_status ON risk_alerts (status, created_at);
