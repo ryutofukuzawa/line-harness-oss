@@ -45,25 +45,42 @@ async function scopedStoreIds(
   return null;
 }
 
+// 同一人物の正規化キー: 電話 → SF ID → LINE画像トークン → 個別ID。
+// 複数OAに登録された同一人物は同じキーになり、一斉配信で1通に重複排除される。
+const PKEY = `COALESCE(
+  NULLIF(json_extract(f.metadata,'$.phone'),''),
+  NULLIF(json_extract(f.metadata,'$.sf_id'),''),
+  CASE WHEN f.picture_url LIKE 'https://sprofile.line-scdn.net/%' THEN SUBSTR(f.picture_url,42,80)
+       WHEN f.picture_url LIKE 'https://profile.line-scdn.net/%' THEN SUBSTR(f.picture_url,41,80) END,
+  'solo:'||f.id)`;
+
 async function audience(db: D1Database, storeIds: string[]) {
-  if (storeIds.length === 0) return { total: 0, excluded: 0, target: 0, perStore: [] as any[] };
+  if (storeIds.length === 0) return { gross: 0, unique: 0, savedDup: 0, total: 0, excluded: 0, target: 0, perStore: [] as any[] };
   const ph = storeIds.map(() => '?').join(',');
-  const totalRow = await db.prepare(`SELECT COUNT(*) AS n FROM friends WHERE is_following=1 AND line_account_id IN (${ph})`).bind(...storeIds).first<{ n: number }>();
+  // gross=のべ登録件数, unique=重複排除後の人数
+  const row = await db.prepare(
+    `SELECT COUNT(*) AS gross, COUNT(DISTINCT ${PKEY}) AS uniq
+     FROM friends f WHERE f.is_following=1 AND f.line_account_id IN (${ph})`,
+  ).bind(...storeIds).first<{ gross: number; uniq: number }>();
+  // 頻度上限: 直近WINDOW日にFREQ_CAP回以上配信された「人」を除外
   const excludedRow = await db.prepare(
     `SELECT COUNT(*) AS n FROM (
-       SELECT m.friend_id FROM messages_log m JOIN friends f ON f.id=m.friend_id
-       WHERE m.broadcast_id IS NOT NULL AND f.line_account_id IN (${ph})
+       SELECT ${PKEY} AS pk FROM friends f
+       JOIN messages_log m ON m.friend_id=f.id
+       WHERE f.line_account_id IN (${ph}) AND m.broadcast_id IS NOT NULL
          AND m.created_at >= datetime('now','-${WINDOW_DAYS} days','+9 hours')
-       GROUP BY m.friend_id HAVING COUNT(*) >= ${FREQ_CAP})`,
+       GROUP BY pk HAVING COUNT(*) >= ${FREQ_CAP})`,
   ).bind(...storeIds).first<{ n: number }>();
   const per = await db.prepare(
     `SELECT la.id AS accountId, la.name, COUNT(f.id) AS count
      FROM line_accounts la LEFT JOIN friends f ON f.line_account_id=la.id AND f.is_following=1
      WHERE la.id IN (${ph}) GROUP BY la.id, la.name ORDER BY la.display_order, la.name`,
   ).bind(...storeIds).all();
-  const total = totalRow?.n ?? 0;
+  const gross = row?.gross ?? 0;
+  const uniq = row?.uniq ?? 0;
   const excluded = excludedRow?.n ?? 0;
-  return { total, excluded, target: Math.max(0, total - excluded), perStore: per.results ?? [] };
+  const target = Math.max(0, uniq - excluded);
+  return { gross, unique: uniq, savedDup: gross - uniq, total: gross, excluded, target, perStore: per.results ?? [] };
 }
 
 broadcastGovernance.get('/api/org/me', async (c) => {

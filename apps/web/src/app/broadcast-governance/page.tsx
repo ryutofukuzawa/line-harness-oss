@@ -9,7 +9,7 @@ const token = () => (typeof window !== 'undefined' ? localStorage.getItem('lh_ap
 interface Store { id: string; name: string; area_id?: string }
 interface Area { id: string; name: string }
 interface Me { layer: string; layerLabel: string; areaId: string | null; areaName: string | null; stores: Store[]; areas: Area[]; proposableScopes: string[]; canApprove: boolean }
-interface Aud { total: number; excluded: number; target: number; perStore: { accountId: string; name: string; count: number }[]; freqCap: number; windowDays: number }
+interface Aud { gross: number; unique: number; savedDup: number; total: number; excluded: number; target: number; perStore: { accountId: string; name: string; count: number }[]; freqCap: number; windowDays: number }
 interface Req {
   id: string; title: string; message: string; scope: string; area_id: string | null; line_account_id: string | null
   target_count: number; excluded_count: number; per_store: string | null
@@ -125,8 +125,14 @@ export default function BroadcastGovernancePage() {
               {err && <div className="text-xs text-rose-600">{err}</div>}
               {aud && (
                 <div className="text-sm bg-gray-50 border border-gray-100 rounded-lg p-3 space-y-1">
-                  <div>対象 <b className="text-gray-900">{aud.target}</b> 件{aud.excluded > 0 && <span className="text-amber-600">（頻度上限で {aud.excluded} 件除外）</span>}</div>
-                  {aud.perStore.length > 0 && <div className="flex flex-wrap gap-1">{aud.perStore.map((s) => <span key={s.accountId} className="text-[11px] bg-white border border-gray-200 rounded px-1.5 py-0.5">{s.name}: {s.count}</span>)}</div>}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-gray-500">のべ登録 {aud.gross} 件</span>
+                    <span className="text-gray-300">→</span>
+                    <span>重複排除後 <b className="text-gray-900">{aud.unique}</b> 人</span>
+                    {aud.savedDup > 0 && <span className="text-[#A8842F] text-xs">（重複 {aud.savedDup} 件を排除＝1人1通）</span>}
+                  </div>
+                  <div>実送信 <b className="text-gray-900">{aud.target}</b> 通{aud.excluded > 0 && <span className="text-amber-600">（頻度上限で {aud.excluded} 人除外）</span>}</div>
+                  {aud.perStore.length > 0 && <div className="flex flex-wrap gap-1 pt-0.5"><span className="text-[11px] text-gray-400 mr-1">店舗別登録:</span>{aud.perStore.map((s) => <span key={s.accountId} className="text-[11px] bg-white border border-gray-200 rounded px-1.5 py-0.5">{s.name}: {s.count}</span>)}</div>}
                 </div>
               )}
               <button onClick={submit} disabled={!title.trim() || !message.trim() || !aud || busy} className="w-full py-2 rounded-lg bg-gray-800 text-white text-sm font-medium disabled:opacity-40">③ 承認に提出</button>
