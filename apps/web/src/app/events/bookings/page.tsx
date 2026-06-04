@@ -20,7 +20,7 @@ const STATUS_TABS: Array<{ key: string; label: string }> = [
 
 const statusBadge: Record<string, string> = {
   requested: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-green-100 text-green-800',
+  confirmed: 'bg-blue-100 text-blue-800',
   rejected: 'bg-gray-100 text-gray-700',
   cancelled: 'bg-gray-100 text-gray-600',
   expired: 'bg-gray-100 text-gray-500',
@@ -209,7 +209,7 @@ function BookingsInner() {
                             <button
                               onClick={() => decide(b.id, 'confirm')}
                               disabled={busy}
-                              className="px-3 py-1 bg-green-600 text-white rounded-lg text-xs font-medium hover:bg-green-700 disabled:opacity-50"
+                              className="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 disabled:opacity-50"
                             >
                               承認
                             </button>

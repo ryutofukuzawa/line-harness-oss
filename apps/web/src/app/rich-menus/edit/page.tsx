@@ -401,7 +401,7 @@ function Editor({
               onClick={handlePublish}
               disabled={saving || publishing || unpublishing || busy}
               className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#06C755' }}
+              style={{ backgroundColor: '#1C2E6E' }}
             >
               {publishing
                 ? 'LINE 登録中...'
@@ -442,7 +442,7 @@ function Editor({
                   ? 'text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
-              style={active ? { backgroundColor: '#06C755' } : undefined}
+              style={active ? { backgroundColor: '#1C2E6E' } : undefined}
             >
               {p.name}
               {p.id.startsWith('tmp-') && (
@@ -503,7 +503,7 @@ function Editor({
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="mt-1 text-[11px] text-gray-500">管理画面でだけ使う名前 (友だちには見えない)</p>
             </label>
@@ -513,7 +513,7 @@ function Editor({
                 value={chatBarText}
                 onChange={(e) => setChatBarText(e.target.value)}
                 maxLength={14}
-                className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <p className="mt-1 text-[11px] text-gray-500">14 文字以内 (友だちのトーク画面でメニューを開く前に表示)</p>
             </label>
@@ -530,7 +530,7 @@ function Editor({
                   onChange={(e) =>
                     updatePage(activePage.id, { name: e.target.value })
                   }
-                  className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </label>
               <div>

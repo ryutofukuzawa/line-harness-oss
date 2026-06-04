@@ -258,7 +258,7 @@ export default function RemindersPage() {
           <button
             onClick={() => setShowCreate(true)}
             className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規リマインダー
           </button>
@@ -281,7 +281,7 @@ export default function RemindersPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">リマインダー名 <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例: セミナー参加リマインダー"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -290,7 +290,7 @@ export default function RemindersPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">説明</label>
               <textarea
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 rows={2}
                 placeholder="リマインダーの説明 (省略可)"
                 value={form.description}
@@ -305,7 +305,7 @@ export default function RemindersPage() {
                 onClick={handleCreate}
                 disabled={saving}
                 className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 {saving ? '作成中...' : '作成'}
               </button>
@@ -363,7 +363,7 @@ export default function RemindersPage() {
                     <span
                       className={`ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ${
                         reminder.isActive
-                          ? 'bg-green-100 text-green-700'
+                          ? 'bg-blue-100 text-blue-700'
                           : 'bg-gray-100 text-gray-500'
                       }`}
                     >
@@ -390,7 +390,7 @@ export default function RemindersPage() {
                             ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                             : 'text-white hover:opacity-90'
                         }`}
-                        style={!reminder.isActive ? { backgroundColor: '#06C755' } : undefined}
+                        style={!reminder.isActive ? { backgroundColor: '#1C2E6E' } : undefined}
                       >
                         {reminder.isActive ? '無効にする' : '有効にする'}
                       </button>
@@ -418,7 +418,7 @@ export default function RemindersPage() {
                           <button
                             onClick={() => { setShowStepForm(true); setStepFormError('') }}
                             className="px-3 py-1 min-h-[44px] text-xs font-medium text-white rounded-md transition-opacity hover:opacity-90"
-                            style={{ backgroundColor: '#06C755' }}
+                            style={{ backgroundColor: '#1C2E6E' }}
                           >
                             + ステップ追加
                           </button>
@@ -468,7 +468,7 @@ export default function RemindersPage() {
                                 <label className="block text-xs font-medium text-gray-600 mb-1">オフセット (分)</label>
                                 <input
                                   type="number"
-                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                                   placeholder="例: -60 (1時間前), +30 (30分後)"
                                   value={stepForm.offsetMinutes}
                                   onChange={(e) => setStepForm({ ...stepForm, offsetMinutes: Number(e.target.value) })}
@@ -480,7 +480,7 @@ export default function RemindersPage() {
                               <div>
                                 <label className="block text-xs font-medium text-gray-600 mb-1">メッセージタイプ</label>
                                 <select
-                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                                   value={stepForm.messageType}
                                   onChange={(e) => setStepForm({ ...stepForm, messageType: e.target.value })}
                                 >
@@ -492,7 +492,7 @@ export default function RemindersPage() {
                               <div>
                                 <label className="block text-xs font-medium text-gray-600 mb-1">メッセージ内容 <span className="text-red-500">*</span></label>
                                 <textarea
-                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                                   rows={3}
                                   placeholder="メッセージ内容を入力"
                                   value={stepForm.messageContent}
@@ -507,7 +507,7 @@ export default function RemindersPage() {
                                   onClick={handleAddStep}
                                   disabled={stepSaving}
                                   className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                                  style={{ backgroundColor: '#06C755' }}
+                                  style={{ backgroundColor: '#1C2E6E' }}
                                 >
                                   {stepSaving ? '追加中...' : '追加'}
                                 </button>

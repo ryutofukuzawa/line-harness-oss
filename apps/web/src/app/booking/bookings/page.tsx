@@ -16,7 +16,7 @@ const STATUS_TABS: Array<{ key: string; label: string }> = [
 
 const statusBadgeColor: Record<string, string> = {
   requested: 'bg-yellow-100 text-yellow-800',
-  confirmed: 'bg-green-100 text-green-800',
+  confirmed: 'bg-blue-100 text-blue-800',
   rejected: 'bg-gray-100 text-gray-700',
   expired: 'bg-gray-100 text-gray-600',
   cancelled: 'bg-gray-100 text-gray-600',
@@ -113,7 +113,7 @@ export default function BookingsPage() {
             className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
               tab === key ? 'text-white' : 'text-gray-600 bg-gray-100 hover:bg-gray-200'
             }`}
-            style={tab === key ? { backgroundColor: '#06C755' } : undefined}
+            style={tab === key ? { backgroundColor: '#1C2E6E' } : undefined}
           >
             {label}
           </button>
@@ -191,7 +191,7 @@ function ActionButtons({
         <button
           onClick={() => onAction('approve')}
           className="px-3 py-1 text-xs font-medium text-white rounded-md transition-opacity hover:opacity-90"
-          style={{ backgroundColor: '#06C755' }}
+          style={{ backgroundColor: '#1C2E6E' }}
         >
           承認
         </button>

@@ -226,7 +226,7 @@ export default function EventForm({ accountId, eventId }: EventFormProps) {
 
       {/* toast */}
       {toast && (
-        <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+        <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-sm">
           ✓ {toast}
         </div>
       )}
@@ -734,7 +734,7 @@ function SlotsTab({
                       onClick={() => toggleActive(s)}
                       disabled={busy}
                       className={`text-xs px-2 py-1 rounded-full font-medium ${
-                        s.is_active === 1 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                        s.is_active === 1 ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
                       }`}
                     >
                       {s.is_active === 1 ? '有効' : '停止'}
@@ -1136,8 +1136,8 @@ function PublishTab({
             onClick={() => update('is_published', 1)}
             className={`p-3 border-2 rounded-lg text-left transition-colors ${
               draft.is_published === 1
-                ? 'border-green-500 bg-green-50'
-                : 'border-gray-200 bg-white hover:border-green-300'
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-200 bg-white hover:border-blue-300'
             }`}
           >
             <div className="text-sm font-bold text-gray-900">公開する</div>

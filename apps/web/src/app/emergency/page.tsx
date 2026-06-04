@@ -110,7 +110,7 @@ export default function EmergencyPage() {
     switch (status) {
       case 'done':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
@@ -211,7 +211,7 @@ export default function EmergencyPage() {
               <span className="text-sm text-gray-600">{action.label}</span>
               <span className={`text-xs font-medium ${
                 action.status === 'done'
-                  ? 'text-green-600'
+                  ? 'text-blue-600'
                   : action.status === 'error'
                   ? 'text-red-600'
                   : action.status === 'executing'

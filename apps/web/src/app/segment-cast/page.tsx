@@ -85,7 +85,7 @@ export default function SegmentCastPage() {
         description="1:1より広く一斉より狭い、属性で絞った配信。店舗カウンセラーが自店で実行できます（プロラボ独自機能）"
       />
       <div className="p-6 space-y-5">
-        {scoped && <div className="rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-800 p-3 text-sm">担当店舗のみ配信できます。</div>}
+        {scoped && <div className="rounded-lg border bg-blue-50 border-blue-200 text-blue-800 p-3 text-sm">担当店舗のみ配信できます。</div>}
         {/* 店舗 */}
         <div className="flex flex-wrap gap-1.5">
           {accounts.map((a) => (
@@ -122,7 +122,7 @@ export default function SegmentCastPage() {
             <label className="text-xs text-gray-500 block">スコア下限（行動エンゲージメント）
               <input value={scoreMin} onChange={(e) => setScoreMin(e.target.value)} type="number" placeholder="例: 50" className="mt-1 w-32 text-sm border border-gray-300 rounded-lg px-2 py-2" />
             </label>
-            <button onClick={runPreview} disabled={!active || busy} className="w-full py-2 rounded-lg border border-green-500 text-green-700 text-sm font-medium hover:bg-green-50 disabled:opacity-40">② 対象を試算</button>
+            <button onClick={runPreview} disabled={!active || busy} className="w-full py-2 rounded-lg border border-blue-500 text-blue-700 text-sm font-medium hover:bg-blue-50 disabled:opacity-40">② 対象を試算</button>
             {preview && (
               <div className="text-sm bg-gray-50 border border-gray-100 rounded-lg p-3">
                 対象 <span className="font-bold text-gray-900">{preview.count}</span> 件
@@ -138,11 +138,11 @@ export default function SegmentCastPage() {
           {/* メッセージ */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
             <div className="text-sm font-semibold text-gray-700">③ メッセージを送信</div>
-            <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} placeholder="このセグメント向けのメッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-green-500" />
-            <button onClick={send} disabled={!message.trim() || !preview || busy} className="w-full py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#06C755' }}>
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} placeholder="このセグメント向けのメッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+            <button onClick={send} disabled={!message.trim() || !preview || busy} className="w-full py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#A8842F' }}>
               {preview ? `この${preview.count}件に配信` : '配信（先に試算）'}
             </button>
-            {flash && <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">{flash}</div>}
+            {flash && <div className="text-sm text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">{flash}</div>}
             <p className="text-[11px] text-gray-400">※ 全店一斉(本部承認)とは別。自店セグメントへの中間配信です。</p>
           </div>
         </div>

@@ -9,7 +9,7 @@ const fmt = new Intl.DateTimeFormat('ja-JP', {
 })
 
 const ACCOUNT_BADGE_COLORS = [
-  'bg-emerald-100 text-emerald-700',
+  'bg-blue-100 text-blue-700',
   'bg-sky-100 text-sky-700',
   'bg-violet-100 text-violet-700',
   'bg-amber-100 text-amber-700',
@@ -99,7 +99,7 @@ export default function UserRow({ row, accountColorMap }: Props) {
                   {row.accounts.map((a) => (
                     <li key={a.friendId} className="flex flex-wrap items-center gap-2 text-gray-700">
                       <span
-                        className={`h-2 w-2 rounded-full ${a.isFollowing ? 'bg-emerald-500' : 'bg-gray-300'}`}
+                        className={`h-2 w-2 rounded-full ${a.isFollowing ? 'bg-blue-500' : 'bg-gray-300'}`}
                       />
                       <span className="font-medium">{a.accountName}</span>
                       <span className="font-mono text-xs text-gray-400">{a.lineUserId}</span>

@@ -153,7 +153,7 @@ export default function StaffPage() {
           <button
             onClick={() => setShowForm(!showForm)}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + スタッフを追加
           </button>
@@ -162,17 +162,17 @@ export default function StaffPage() {
 
       {/* New API key banner */}
       {newKey && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <p className="text-sm font-medium text-green-800 mb-2">
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm font-medium text-blue-800 mb-2">
             APIキーが発行されました。このキーは一度しか表示されません。
           </p>
           <div className="flex items-center gap-2">
-            <code className="flex-1 text-xs bg-white border border-green-200 rounded px-3 py-2 font-mono break-all">
+            <code className="flex-1 text-xs bg-white border border-blue-200 rounded px-3 py-2 font-mono break-all">
               {newKey.apiKey}
             </code>
             <button
               onClick={handleCopy}
-              className="shrink-0 px-3 py-2 text-xs font-medium text-green-700 bg-white border border-green-300 rounded-lg hover:bg-green-50 transition-colors"
+              className="shrink-0 px-3 py-2 text-xs font-medium text-blue-700 bg-white border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors"
             >
               {copied ? 'コピー済み' : 'コピー'}
             </button>
@@ -200,7 +200,7 @@ export default function StaffPage() {
                   onChange={(e) => setFormName(e.target.value)}
                   required
                   placeholder="田中 太郎"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
@@ -210,7 +210,7 @@ export default function StaffPage() {
                   value={formEmail}
                   onChange={(e) => setFormEmail(e.target.value)}
                   placeholder="taro@example.com"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
@@ -218,7 +218,7 @@ export default function StaffPage() {
                 <select
                   value={formRole}
                   onChange={(e) => setFormRole(e.target.value as 'admin' | 'staff')}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="staff">スタッフ</option>
                   <option value="admin">管理者</option>
@@ -233,7 +233,7 @@ export default function StaffPage() {
                 type="submit"
                 disabled={formLoading || !formName}
                 className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 {formLoading ? '作成中...' : '作成'}
               </button>
@@ -300,8 +300,8 @@ export default function StaffPage() {
                     {maskKey(member.apiKey ?? '')}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex items-center gap-1.5 text-xs ${member.isActive ? 'text-green-700' : 'text-gray-400'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${member.isActive ? 'bg-green-500' : 'bg-gray-300'}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs ${member.isActive ? 'text-blue-700' : 'text-gray-400'}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${member.isActive ? 'bg-blue-500' : 'bg-gray-300'}`} />
                       {member.isActive ? '有効' : '無効'}
                     </span>
                   </td>

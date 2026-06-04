@@ -114,7 +114,7 @@ export default function MenuStaffMatrix() {
             // 「保存して再取得」のショートサーキットを防ぎ、ユーザーが再読み込みする導線へ。
             disabled={saving || !selectedAccountId || loading || Boolean(error)}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {saving ? '保存中…' : '保存'}
           </button>
@@ -127,7 +127,7 @@ export default function MenuStaffMatrix() {
         </div>
       )}
       {savedAt && Date.now() - savedAt < 3000 && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-sm">
           保存しました
         </div>
       )}
@@ -205,7 +205,7 @@ export default function MenuStaffMatrix() {
                           }
                           disabled={!offered}
                           placeholder={menu ? `${menu.duration_minutes}` : '-'}
-                          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-24 tabular-nums focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-50 disabled:text-gray-400"
+                          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-24 tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-400"
                         />
                         <span className="ml-1 text-xs text-gray-400">分</span>
                       </td>
@@ -221,7 +221,7 @@ export default function MenuStaffMatrix() {
                           }
                           disabled={!offered}
                           placeholder={menu ? menu.base_price.toString() : '-'}
-                          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-28 tabular-nums focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-50 disabled:text-gray-400"
+                          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-28 tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-400"
                         />
                       </td>
                     </tr>

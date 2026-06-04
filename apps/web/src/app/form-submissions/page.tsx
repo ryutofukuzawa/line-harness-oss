@@ -172,12 +172,12 @@ export default function FormSubmissionsPage() {
                   onClick={() => handleSelectForm(form.id)}
                   className={`group text-left rounded-xl border p-4 transition-all ${
                     isSelected
-                      ? 'border-[#06C755] bg-[#F1FBF5] shadow-sm'
+                      ? 'border-[#1C2E6E] bg-[#F1FBF5] shadow-sm'
                       : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className={`text-sm font-semibold leading-snug ${isSelected ? 'text-[#06C755]' : 'text-gray-900'}`}>
+                    <h3 className={`text-sm font-semibold leading-snug ${isSelected ? 'text-[#1C2E6E]' : 'text-gray-900'}`}>
                       {form.name}
                     </h3>
                     <span className="text-[11px] text-gray-400 whitespace-nowrap">
@@ -273,7 +273,7 @@ export default function FormSubmissionsPage() {
                             <Link
                               href={`/chats?friend=${encodeURIComponent(sub.friendId)}`}
                               onClick={(e) => e.stopPropagation()}
-                              className="text-[#06C755] hover:underline"
+                              className="text-[#1C2E6E] hover:underline"
                             >
                               {sub.friendName || '不明'}
                             </Link>
@@ -355,7 +355,7 @@ export default function FormSubmissionsPage() {
                 {detailSubmission.friendId ? (
                   <Link
                     href={`/chats?friend=${encodeURIComponent(detailSubmission.friendId)}`}
-                    className="inline-flex items-center gap-2 text-sm text-[#06C755] hover:underline"
+                    className="inline-flex items-center gap-2 text-sm text-[#1C2E6E] hover:underline"
                   >
                     <span className="font-medium">{detailSubmission.friendName || '不明'}</span>
                     <span className="text-[11px] text-gray-400">→ チャットを開く</span>

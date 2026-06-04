@@ -219,7 +219,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
               } catch { return <p className="text-gray-400 text-sm">画像プレビュー不可</p> }
             })()
           ) : (
-            <div className="bg-green-500 text-white rounded-2xl rounded-tl-sm px-4 py-3 max-w-[300px] text-sm whitespace-pre-wrap">
+            <div className="bg-blue-500 text-white rounded-2xl rounded-tl-sm px-4 py-3 max-w-[300px] text-sm whitespace-pre-wrap">
               {broadcast.messageContent}
             </div>
           )}
@@ -247,7 +247,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
                   broadcast.status === 'draft' ? 'bg-gray-100 text-gray-600' :
                   broadcast.status === 'scheduled' ? 'bg-blue-100 text-blue-700' :
                   broadcast.status === 'sending' ? 'bg-yellow-100 text-yellow-700' :
-                  'bg-green-100 text-green-700'
+                  'bg-blue-100 text-blue-700'
                 }`}>
                   {broadcast.status === 'draft' ? '下書き' : broadcast.status === 'scheduled' ? '予約済み' : broadcast.status === 'sending' ? '送信中' : '送信完了'}
                 </span>
@@ -316,7 +316,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
               <p className="text-xs text-gray-500">開封 {insight.openRate != null ? `(${(insight.openRate * 100).toFixed(1)}%)` : ''}</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-green-600">{insight.uniqueClick?.toLocaleString('ja-JP') ?? '-'}</p>
+              <p className="text-2xl font-bold text-blue-600">{insight.uniqueClick?.toLocaleString('ja-JP') ?? '-'}</p>
               <p className="text-xs text-gray-500">クリック {insight.clickRate != null ? `(${(insight.clickRate * 100).toFixed(1)}%)` : ''}</p>
             </div>
           </div>
@@ -368,7 +368,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
                       </td>
                       <td className="px-2 py-2 text-right">
                         {row.uniqueClick != null ? (
-                          <span className="text-green-600">
+                          <span className="text-blue-600">
                             {row.uniqueClick.toLocaleString('ja-JP')}
                             {clickRate != null && (
                               <span className="ml-1 text-xs text-gray-400">({clickRate.toFixed(1)}%)</span>
@@ -418,7 +418,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
                       </td>
                       <td className="px-2 py-2 text-right">
                         {totalClick != null ? (
-                          <span className="text-green-600">
+                          <span className="text-blue-600">
                             {totalClick.toLocaleString('ja-JP')}
                             {totalClickRate != null && (
                               <span className="ml-1 text-xs text-gray-400">({totalClickRate.toFixed(1)}%)</span>
@@ -450,7 +450,7 @@ export default function BroadcastDetail({ broadcastId }: BroadcastDetailProps) {
           onClick={() => setShowConfirm(true)}
           disabled={sending}
           className="w-full px-4 py-3 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-          style={{ backgroundColor: '#06C755' }}
+          style={{ backgroundColor: '#1C2E6E' }}
         >
           {sending ? '送信中...' : `この配信を送信する${targetCount != null ? ` (${targetCount.toLocaleString('ja-JP')}人)` : ''}`}
         </button>

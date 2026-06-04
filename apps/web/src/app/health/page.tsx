@@ -36,7 +36,7 @@ interface AccountMigration {
 }
 
 const riskConfig = {
-  normal: { label: '正常', color: 'bg-green-500', textColor: 'text-green-700', bgColor: 'bg-green-100' },
+  normal: { label: '正常', color: 'bg-blue-500', textColor: 'text-blue-700', bgColor: 'bg-blue-100' },
   warning: { label: '警告', color: 'bg-yellow-500', textColor: 'text-yellow-700', bgColor: 'bg-yellow-100' },
   danger: { label: '危険', color: 'bg-red-500', textColor: 'text-red-700', bgColor: 'bg-red-100' },
 }
@@ -44,7 +44,7 @@ const riskConfig = {
 const statusConfig: Record<AccountMigration['status'], { label: string; textColor: string; bgColor: string }> = {
   pending: { label: '待機中', textColor: 'text-gray-700', bgColor: 'bg-gray-100' },
   in_progress: { label: '移行中', textColor: 'text-blue-700', bgColor: 'bg-blue-100' },
-  completed: { label: '完了', textColor: 'text-green-700', bgColor: 'bg-green-100' },
+  completed: { label: '完了', textColor: 'text-blue-700', bgColor: 'bg-blue-100' },
   failed: { label: '失敗', textColor: 'text-red-700', bgColor: 'bg-red-100' },
 }
 
@@ -201,7 +201,7 @@ export default function HealthPage() {
                       <div className="flex items-center gap-3">
                         <div
                           className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm"
-                          style={{ backgroundColor: '#06C755' }}
+                          style={{ backgroundColor: '#1C2E6E' }}
                         >
                           L
                         </div>
@@ -303,7 +303,7 @@ export default function HealthPage() {
                   <select
                     value={migrateToId}
                     onChange={(e) => setMigrateToId(e.target.value)}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   >
                     <option value="">選択してください</option>
@@ -321,7 +321,7 @@ export default function HealthPage() {
                     type="submit"
                     disabled={migrating || !migrateToId}
                     className="px-4 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                    style={{ backgroundColor: '#06C755' }}
+                    style={{ backgroundColor: '#1C2E6E' }}
                   >
                     {migrating ? '移行中...' : '移行を開始'}
                   </button>
@@ -385,7 +385,7 @@ export default function HealthPage() {
                                 <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                                   <div
                                     className="h-full rounded-full transition-all"
-                                    style={{ width: `${progress}%`, backgroundColor: '#06C755' }}
+                                    style={{ width: `${progress}%`, backgroundColor: '#1C2E6E' }}
                                   />
                                 </div>
                                 <span className="text-xs text-gray-500">

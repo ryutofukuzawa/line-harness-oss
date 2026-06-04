@@ -76,7 +76,7 @@ export default function SendConfirmDialog({ title, targetCount, accountName, isM
             onClick={onConfirm}
             disabled={countdown > 0}
             className="flex-1 px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {countdown > 0 ? `送信する (${countdown})` : '送信する'}
           </button>

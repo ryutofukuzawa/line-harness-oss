@@ -83,7 +83,7 @@ export default function StoreChatsPage() {
         description="担当店舗(OA)のチャットだけを表示。本部は全店、店舗マネージャーは自店のみ（プロラボ独自機能）"
       />
       <div className="p-6 space-y-5">
-        <div className={`rounded-lg border p-3 text-sm ${scoped ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-blue-50 border-blue-200 text-blue-800'}`}>
+        <div className={`rounded-lg border p-3 text-sm ${scoped ? 'bg-blue-50 border-blue-200 text-blue-800' : 'bg-blue-50 border-blue-200 text-blue-800'}`}>
           {scoped
             ? `あなたは担当店舗のみ閲覧できます（${accounts.length}店舗）。他店のチャットは表示されません。`
             : `本部ビュー：全${accounts.length}店舗のチャットを閲覧できます。`}
@@ -140,7 +140,7 @@ export default function StoreChatsPage() {
                 <option value="">店舗を選択</option>
                 {accounts.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
               </select>
-              <button onClick={addAsg} disabled={!asgStaff || !asgAcc} className="px-3 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#06C755' }}>割当てる</button>
+              <button onClick={addAsg} disabled={!asgStaff || !asgAcc} className="px-3 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#A8842F' }}>割当てる</button>
             </div>
             {staff.length === 0 && <div className="text-xs text-gray-400">role=staff のスタッフがいません（スタッフ管理で追加）。</div>}
             <div className="space-y-1">

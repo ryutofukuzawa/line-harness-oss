@@ -104,13 +104,13 @@ export default function CrmSyncPage() {
                 <option value="line_user_id">LINEユーザーID</option>
               </select>
             </label>
-            <textarea value={csv} onChange={(e) => { setCsv(e.target.value); setPreview(null) }} rows={7} className="w-full text-xs font-mono border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-green-500" />
+            <textarea value={csv} onChange={(e) => { setCsv(e.target.value); setPreview(null) }} rows={7} className="w-full text-xs font-mono border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
             <p className="text-[11px] text-gray-400">1行目=ヘッダ（1列目に突合キー、以降に tantou / course / ltv 等）。数値はそのまま格納。</p>
             <div className="flex gap-2">
-              <button onClick={runPreview} disabled={busy} className="flex-1 py-2 rounded-lg border border-green-500 text-green-700 text-sm font-medium hover:bg-green-50 disabled:opacity-40">② 照合プレビュー</button>
-              <button onClick={apply} disabled={busy || !preview} className="flex-1 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#06C755' }}>③ 取込実行</button>
+              <button onClick={runPreview} disabled={busy} className="flex-1 py-2 rounded-lg border border-blue-500 text-blue-700 text-sm font-medium hover:bg-blue-50 disabled:opacity-40">② 照合プレビュー</button>
+              <button onClick={apply} disabled={busy || !preview} className="flex-1 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#A8842F' }}>③ 取込実行</button>
             </div>
-            {flash && <div className="text-sm text-green-700 bg-green-50 border border-green-100 rounded-lg px-3 py-2">{flash}</div>}
+            {flash && <div className="text-sm text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">{flash}</div>}
           </div>
 
           {/* プレビュー結果 + 履歴 */}
@@ -118,7 +118,7 @@ export default function CrmSyncPage() {
             {preview && (
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="text-sm font-semibold text-gray-700 mb-2">照合結果</div>
-                <div className="text-sm">一致 <b className="text-green-700">{preview.matched}</b> 件 / 未一致 <b className="text-amber-600">{preview.unmatched}</b> 件（全{preview.total}行）</div>
+                <div className="text-sm">一致 <b className="text-blue-700">{preview.matched}</b> 件 / 未一致 <b className="text-amber-600">{preview.unmatched}</b> 件（全{preview.total}行）</div>
                 {preview.sample.length > 0 && (
                   <div className="mt-2 text-xs text-gray-500 space-y-0.5">
                     {preview.sample.map((s, i) => <div key={i}>・{s.name}：{Object.entries(s.attrs).map(([k, v]) => `${k}=${v}`).join(' / ')}</div>)}

@@ -97,10 +97,10 @@ export default function AutoRepliesPage() {
             return (
               <span
                 key={ea.accountId}
-                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-green-100 text-green-700 font-medium"
+                className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-blue-100 text-blue-700 font-medium"
                 title={`${label}: 返信あり (${ea.via === 'automation' ? 'automation 経由' : 'inline'})`}
               >
-                ✓ {label}{ea.via === 'automation' && <span className="text-green-500">⚙</span>}
+                ✓ {label}{ea.via === 'automation' && <span className="text-blue-500">⚙</span>}
               </span>
             )
           }
@@ -162,7 +162,7 @@ export default function AutoRepliesPage() {
               isActive: true,
             })}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規ルール
           </button>
@@ -176,7 +176,7 @@ export default function AutoRepliesPage() {
       )}
 
       <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 space-y-1">
-        <p><span className="inline-flex items-center px-1.5 py-0.5 rounded bg-green-100 text-green-700">✓ アカ名</span> 返信あり (inline) / <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-green-100 text-green-700">✓ アカ名 ⚙</span> automation 経由</p>
+        <p><span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">✓ アカ名</span> 返信あり (inline) / <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">✓ アカ名 ⚙</span> automation 経由</p>
         <p><span className="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-50 text-amber-700">⚠ アカ名</span> silent rule のみ — match するが返信しない (同 keyword の automation rule 未登録)</p>
         <p><span className="inline-flex items-center px-1.5 py-0.5 rounded bg-gray-50 text-gray-300 line-through">アカ名</span> 適用外 (line_account_id が別アカに固定)</p>
       </div>
@@ -209,7 +209,7 @@ export default function AutoRepliesPage() {
                     <td className="px-4 py-3">{renderTemplateCell(r)}</td>
                     <td className="px-4 py-3">{renderEffectiveCell(r)}</td>
                     <td className="px-4 py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${r.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${r.isActive ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'}`}>
                         {r.isActive ? '有効' : '無効'}
                       </span>
                     </td>

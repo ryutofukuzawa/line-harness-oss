@@ -113,13 +113,13 @@ export default function RiskAlertsPage() {
               onChange={(e) => setText(e.target.value.slice(0, 500))}
               onKeyDown={(e) => e.key === 'Enter' && classify()}
               placeholder="例：効果が出ないしもう解約しようか迷ってます…"
-              className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-green-500"
+              className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500"
             />
             <button
               onClick={classify}
               disabled={!text.trim() || sending}
               className="px-4 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40"
-              style={{ backgroundColor: '#06C755' }}
+              style={{ backgroundColor: '#A8842F' }}
             >
               {sending ? '判定中…' : '判定する'}
             </button>
@@ -165,9 +165,9 @@ export default function RiskAlertsPage() {
                       <div className="flex items-center gap-2">
                         <span className="text-[11px] text-gray-400">{a.created_at?.slice(0, 16).replace('T', ' ')}</span>
                         {a.status === 'open' ? (
-                          <button onClick={() => resolve(a.id)} className="text-[11px] text-green-700 hover:underline">対応済みにする</button>
+                          <button onClick={() => resolve(a.id)} className="text-[11px] text-blue-700 hover:underline">対応済みにする</button>
                         ) : (
-                          <span className="text-[11px] text-green-600">対応済</span>
+                          <span className="text-[11px] text-blue-600">対応済</span>
                         )}
                       </div>
                     </div>

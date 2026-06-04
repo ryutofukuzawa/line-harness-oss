@@ -36,7 +36,7 @@ const statusConfig: Record<
   draft: { label: '下書き', className: 'bg-gray-100 text-gray-600' },
   scheduled: { label: '予約済み', className: 'bg-blue-100 text-blue-700' },
   sending: { label: '送信中', className: 'bg-yellow-100 text-yellow-700' },
-  sent: { label: '送信完了', className: 'bg-green-100 text-green-700' },
+  sent: { label: '送信完了', className: 'bg-blue-100 text-blue-700' },
 }
 
 function formatDatetime(iso: string | null): string {
@@ -156,7 +156,7 @@ function BroadcastList() {
           <button
             onClick={() => setShowCreate(true)}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規配信
           </button>
@@ -192,10 +192,10 @@ function BroadcastList() {
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? 'border-green-500 text-gray-900'
+                  ? 'border-blue-500 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
-              style={activeTab === tab.id ? { borderColor: '#06C755' } : undefined}
+              style={activeTab === tab.id ? { borderColor: '#1C2E6E' } : undefined}
             >
               {tab.label}
               <span className="ml-1.5 inline-flex items-center justify-center px-1.5 py-0 rounded-full bg-gray-100 text-xs text-gray-600 min-w-[20px]">
@@ -334,7 +334,7 @@ function BroadcastList() {
                                 </p>
                               )}
                               {insights[broadcast.id].uniqueClick != null && (
-                                <p className="text-xs">クリック: <span className="font-medium text-green-600">{insights[broadcast.id].uniqueClick!.toLocaleString('ja-JP')}</span>
+                                <p className="text-xs">クリック: <span className="font-medium text-blue-600">{insights[broadcast.id].uniqueClick!.toLocaleString('ja-JP')}</span>
                                   {insights[broadcast.id].clickRate != null && (
                                     <span className="text-gray-400"> ({(insights[broadcast.id].clickRate! * 100).toFixed(1)}%)</span>
                                   )}

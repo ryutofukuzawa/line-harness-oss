@@ -106,7 +106,7 @@ export default function UpdatesPage() {
 }
 
 function statusClass(s: string): string {
-  if (s === 'success') return 'bg-green-100 text-green-800'
+  if (s === 'success') return 'bg-blue-100 text-blue-800'
   if (s === 'rolled_back') return 'bg-amber-100 text-amber-800'
   if (s === 'failed') return 'bg-red-100 text-red-800'
   if (s === 'running') return 'bg-blue-100 text-blue-800'

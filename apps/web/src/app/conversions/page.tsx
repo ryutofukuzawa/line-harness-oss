@@ -97,7 +97,7 @@ export default function ConversionsPage() {
           <button
             onClick={() => setShowCreate(!showCreate)}
             className="px-4 py-2 min-h-[44px] rounded-lg text-white text-sm font-medium"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {showCreate ? 'キャンセル' : '+ CVポイント作成'}
           </button>
@@ -145,7 +145,7 @@ export default function ConversionsPage() {
           <button
             type="submit"
             className="mt-4 px-4 py-2 min-h-[44px] rounded-lg text-white text-sm font-medium"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             作成
           </button>
@@ -168,7 +168,7 @@ export default function ConversionsPage() {
                 </div>
                 {r.totalValue > 0 && (
                   <div>
-                    <p className="text-lg font-semibold text-green-600">{r.totalValue.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' })}</p>
+                    <p className="text-lg font-semibold text-blue-600">{r.totalValue.toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' })}</p>
                     <p className="text-xs text-gray-400">売上</p>
                   </div>
                 )}

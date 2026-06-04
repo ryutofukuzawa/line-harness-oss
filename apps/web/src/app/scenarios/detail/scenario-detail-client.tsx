@@ -399,7 +399,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
         <Header title="シナリオ詳細" />
         <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
           <p className="text-gray-500">{error || 'シナリオが見つかりません'}</p>
-          <Link href="/scenarios" className="text-sm text-green-600 hover:text-green-700 mt-4 inline-block">
+          <Link href="/scenarios" className="text-sm text-blue-600 hover:text-blue-700 mt-4 inline-block">
             ← シナリオ一覧に戻る
           </Link>
         </div>
@@ -438,7 +438,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
           <span className="text-gray-400">/</span>
           <span>進行中 <span className="font-semibold text-blue-700">{stats.activeNow}</span></span>
           <span className="text-gray-400">/</span>
-          <span>完了 <span className="font-semibold text-green-700">{stats.completed}</span></span>
+          <span>完了 <span className="font-semibold text-blue-700">{stats.completed}</span></span>
           {stats.paused > 0 && (
             <>
               <span className="text-gray-400">/</span>
@@ -456,7 +456,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
               <label className="block text-xs font-medium text-gray-600 mb-1">シナリオ名 <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
               />
@@ -464,7 +464,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">説明</label>
               <textarea
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 rows={2}
                 value={editForm.description}
                 onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
@@ -473,7 +473,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">トリガー</label>
               <select
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 value={editForm.triggerType}
                 onChange={(e) => setEditForm({ ...editForm, triggerType: e.target.value as ScenarioTriggerType })}
               >
@@ -488,7 +488,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 id="editIsActive"
                 checked={editForm.isActive}
                 onChange={(e) => setEditForm({ ...editForm, isActive: e.target.checked })}
-                className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
               <label htmlFor="editIsActive" className="text-sm text-gray-600">有効</label>
             </div>
@@ -497,7 +497,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 onClick={handleSaveScenario}
                 disabled={saving}
                 className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 {saving ? '保存中...' : '保存'}
               </button>
@@ -527,14 +527,14 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 </span>
                 <span
                   className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    scenario.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                    scenario.isActive ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'
                   }`}
                 >
                   {scenario.isActive ? '有効' : '無効'}
                 </span>
                 <button
                   onClick={() => setEditing(true)}
-                  className="text-xs font-medium text-green-600 hover:text-green-700 px-3 py-1.5 rounded-md hover:bg-green-50 transition-colors"
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-md hover:bg-blue-50 transition-colors"
                 >
                   編集
                 </button>
@@ -567,7 +567,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
             <button
               onClick={openAddStep}
               className="px-3 py-1.5 min-h-[44px] text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#06C755' }}
+              style={{ backgroundColor: '#1C2E6E' }}
             >
               + ステップ追加
             </button>
@@ -586,7 +586,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 <input
                   type="number"
                   min={1}
-                  className="w-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={stepForm.stepOrder}
                   onChange={(e) => setStepForm({ ...stepForm, stepOrder: Number(e.target.value) })}
                 />
@@ -624,7 +624,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">テンプレート <span className="text-red-500">*</span></label>
                   <select
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                     value={stepForm.templateId ?? ''}
                     onChange={(e) => setStepForm({ ...stepForm, templateId: e.target.value || null })}
                   >
@@ -644,7 +644,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">メッセージタイプ</label>
                     <select
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                       value={stepForm.messageType}
                       onChange={(e) => setStepForm({ ...stepForm, messageType: e.target.value as MessageType })}
                     >
@@ -656,7 +656,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">メッセージ内容 <span className="text-red-500">*</span></label>
                     <textarea
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                       rows={4}
                       placeholder="メッセージ内容を入力..."
                       value={stepForm.messageContent}
@@ -672,7 +672,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">到達したらタグ付与</label>
                   <select
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                     value={stepForm.onReachTagId ?? ''}
                     onChange={(e) => setStepForm({ ...stepForm, onReachTagId: e.target.value || null })}
                   >
@@ -694,7 +694,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                   onClick={handleSaveStep}
                   disabled={stepSaving}
                   className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                  style={{ backgroundColor: '#06C755' }}
+                  style={{ backgroundColor: '#1C2E6E' }}
                 >
                   {stepSaving ? '保存中...' : editingStepId ? '更新' : '追加'}
                 </button>
@@ -726,7 +726,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <span
                         className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold text-white shrink-0"
-                        style={{ backgroundColor: '#06C755' }}
+                        style={{ backgroundColor: '#1C2E6E' }}
                       >
                         {step.stepOrder}
                       </span>
@@ -773,7 +773,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                       </p>
                     )}
                     {step.onReachTagId && (
-                      <p className="mt-1 text-xs text-green-700">
+                      <p className="mt-1 text-xs text-blue-700">
                         🏷 到達タグ: {tags.find((t) => t.id === step.onReachTagId)?.name ?? step.onReachTagId}
                       </p>
                     )}
@@ -799,7 +799,7 @@ export default function ScenarioDetailClient({ scenarioId }: { scenarioId: strin
                     </div>
                     <button
                       onClick={() => openEditStep(step)}
-                      className="text-xs text-green-600 hover:text-green-700 px-2 py-1 rounded hover:bg-green-50 transition-colors"
+                      className="text-xs text-blue-600 hover:text-blue-700 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
                     >
                       編集
                     </button>

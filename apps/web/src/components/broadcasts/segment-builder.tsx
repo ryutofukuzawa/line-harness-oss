@@ -151,7 +151,7 @@ export default function SegmentBuilder({ tags, accountId, initialConditions, onA
         <button
           onClick={() => onApply({ operator, rules })}
           className="px-3 py-1.5 min-h-[44px] text-xs font-medium text-white rounded-md"
-          style={{ backgroundColor: '#06C755' }}
+          style={{ backgroundColor: '#1C2E6E' }}
         >
           適用
         </button>

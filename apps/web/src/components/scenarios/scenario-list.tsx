@@ -48,7 +48,7 @@ export default function ScenarioList({ scenarios, onToggleActive, onDelete, load
           <div className="flex items-start justify-between gap-2">
             <Link
               href={`/scenarios/detail?id=${scenario.id}`}
-              className="text-sm font-semibold text-gray-900 hover:text-green-600 transition-colors leading-tight"
+              className="text-sm font-semibold text-gray-900 hover:text-blue-600 transition-colors leading-tight"
             >
               {scenario.name}
             </Link>
@@ -57,7 +57,7 @@ export default function ScenarioList({ scenarios, onToggleActive, onDelete, load
               <span
                 className={`shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                   scenario.isActive
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-blue-100 text-blue-700'
                     : 'bg-gray-100 text-gray-500'
                 }`}
               >
@@ -93,7 +93,7 @@ export default function ScenarioList({ scenarios, onToggleActive, onDelete, load
           <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
             <Link
               href={`/scenarios/detail?id=${scenario.id}`}
-              className="flex-1 text-center text-xs font-medium text-green-600 hover:text-green-700 py-1 min-h-[44px] flex items-center justify-center rounded-md hover:bg-green-50 transition-colors"
+              className="flex-1 text-center text-xs font-medium text-blue-600 hover:text-blue-700 py-1 min-h-[44px] flex items-center justify-center rounded-md hover:bg-blue-50 transition-colors"
             >
               編集
             </Link>

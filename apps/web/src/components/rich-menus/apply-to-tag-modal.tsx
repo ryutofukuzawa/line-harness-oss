@@ -109,7 +109,7 @@ export function ApplyToTagModal({ groupId, groupName, onClose }: Props) {
                       onChange={(e) =>
                         setMode({ kind: 'tag', tagId: e.target.value })
                       }
-                      className="mt-2 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                      className="mt-2 block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       {tags.length === 0 ? (
                         <option value="">タグがありません</option>
@@ -142,7 +142,7 @@ export function ApplyToTagModal({ groupId, groupName, onClose }: Props) {
                   onClick={apply}
                   disabled={mode.kind === 'tag' && !mode.tagId}
                   className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#06C755' }}
+                  style={{ backgroundColor: '#1C2E6E' }}
                 >
                   実行する
                 </button>
@@ -161,7 +161,7 @@ export function ApplyToTagModal({ groupId, groupName, onClose }: Props) {
 
           {phase === 'done' && result && (
             <>
-              <div className="bg-green-50 border border-green-200 text-green-800 text-sm p-4 rounded-lg mb-4">
+              <div className="bg-blue-50 border border-blue-200 text-blue-800 text-sm p-4 rounded-lg mb-4">
                 <div className="font-medium mb-1">✓ 完了しました</div>
                 <div className="text-xs">
                   {result.message ??
@@ -172,7 +172,7 @@ export function ApplyToTagModal({ groupId, groupName, onClose }: Props) {
                 <button
                   onClick={onClose}
                   className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#06C755' }}
+                  style={{ backgroundColor: '#1C2E6E' }}
                 >
                   閉じる
                 </button>
@@ -195,7 +195,7 @@ export function ApplyToTagModal({ groupId, groupName, onClose }: Props) {
                 <button
                   onClick={() => setPhase('config')}
                   className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#06C755' }}
+                  style={{ backgroundColor: '#1C2E6E' }}
                 >
                   やり直す
                 </button>
@@ -233,7 +233,7 @@ function RadioOption({
           : checked
             ? warn
               ? 'border-amber-400 bg-amber-50 cursor-pointer'
-              : 'border-green-500 bg-green-50 cursor-pointer'
+              : 'border-blue-500 bg-blue-50 cursor-pointer'
             : 'border-gray-200 hover:bg-gray-50 cursor-pointer'
       }`}
     >

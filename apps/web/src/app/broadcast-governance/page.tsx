@@ -26,7 +26,7 @@ const STATUS: Record<Req['status'], { label: string; cls: string }> = {
   pending: { label: '承認待ち', cls: 'bg-amber-100 text-amber-800 border-amber-200' },
   approved: { label: '承認済', cls: 'bg-blue-100 text-blue-800 border-blue-200' },
   rejected: { label: '却下', cls: 'bg-gray-100 text-gray-600 border-gray-200' },
-  sent: { label: '配信実行', cls: 'bg-green-100 text-green-800 border-green-200' },
+  sent: { label: '配信実行', cls: 'bg-blue-100 text-blue-800 border-blue-200' },
 }
 const SCOPE_LABEL: Record<string, string> = { all: '全店', area: 'エリア', store: '店舗' }
 
@@ -89,7 +89,7 @@ export default function BroadcastGovernancePage() {
             <span className="font-semibold">あなたの権限：{me.layerLabel}</span>
             {me.areaName && <span>／担当エリア：{me.areaName}</span>}
             <span className="text-slate-400">／起案可能：{me.proposableScopes.map((s) => SCOPE_LABEL[s]).join('・') || 'なし（閲覧のみ）'}</span>
-            {me.canApprove && <span className="ml-auto text-green-700 font-semibold">承認権限あり</span>}
+            {me.canApprove && <span className="ml-auto text-blue-700 font-semibold">承認権限あり</span>}
           </div>
         )}
 
@@ -119,9 +119,9 @@ export default function BroadcastGovernancePage() {
                   </label>
                 )}
               </div>
-              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="配信タイトル（社内管理用）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-green-500" />
-              <textarea value={message} onChange={(e) => { setMessage(e.target.value); reset() }} rows={4} placeholder="配信メッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-green-500" />
-              <button onClick={dryRun} disabled={busy} className="w-full py-2 rounded-lg border border-green-500 text-green-700 text-sm font-medium hover:bg-green-50 disabled:opacity-40">② ドライラン（対象を試算）</button>
+              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="配信タイトル（社内管理用）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+              <textarea value={message} onChange={(e) => { setMessage(e.target.value); reset() }} rows={4} placeholder="配信メッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+              <button onClick={dryRun} disabled={busy} className="w-full py-2 rounded-lg border border-blue-500 text-blue-700 text-sm font-medium hover:bg-blue-50 disabled:opacity-40">② ドライラン（対象を試算）</button>
               {err && <div className="text-xs text-rose-600">{err}</div>}
               {aud && (
                 <div className="text-sm bg-gray-50 border border-gray-100 rounded-lg p-3 space-y-1">
@@ -158,7 +158,7 @@ export default function BroadcastGovernancePage() {
                       </div>
                       {me?.canApprove && r.status === 'pending' && (
                         <div className="flex gap-2 mt-2">
-                          <button onClick={() => act(r.id, 'approve')} className="text-xs px-2.5 py-1 rounded-md text-white" style={{ backgroundColor: '#06C755' }}>承認して配信</button>
+                          <button onClick={() => act(r.id, 'approve')} className="text-xs px-2.5 py-1 rounded-md text-white" style={{ backgroundColor: '#A8842F' }}>承認して配信</button>
                           <button onClick={() => act(r.id, 'reject')} className="text-xs px-2.5 py-1 rounded-md border border-gray-300 text-gray-600">却下</button>
                         </div>
                       )}

@@ -121,7 +121,7 @@ export default function StaffShiftsPage() {
         </div>
       )}
       {savedAt && Date.now() - savedAt < 3000 && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-sm">
           シフトを生成しました
         </div>
       )}
@@ -171,14 +171,14 @@ export default function StaffShiftsPage() {
                           type="time"
                           value={cur.start}
                           onChange={(e) => setTpl({ ...tpl, [d.key]: { ...cur, start: e.target.value } })}
-                          className="border border-gray-300 rounded-lg px-2 py-1 text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-green-500"
+                          className="border border-gray-300 rounded-lg px-2 py-1 text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <span className="text-gray-400">〜</span>
                         <input
                           type="time"
                           value={cur.end}
                           onChange={(e) => setTpl({ ...tpl, [d.key]: { ...cur, end: e.target.value } })}
-                          className="border border-gray-300 rounded-lg px-2 py-1 text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-green-500"
+                          className="border border-gray-300 rounded-lg px-2 py-1 text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </>
                     ) : (
@@ -194,7 +194,7 @@ export default function StaffShiftsPage() {
                     type="date"
                     value={fromDate}
                     onChange={(e) => setFromDate(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="border border-gray-300 rounded-lg px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="text-xs text-gray-600 flex items-center gap-2">
@@ -203,7 +203,7 @@ export default function StaffShiftsPage() {
                     type="number"
                     value={weeks}
                     onChange={(e) => setWeeks(Number(e.target.value))}
-                    className="border border-gray-300 rounded-lg px-2 py-1 text-sm w-16 tabular-nums focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="border border-gray-300 rounded-lg px-2 py-1 text-sm w-16 tabular-nums focus:outline-none focus:ring-2 focus:ring-blue-500"
                     min={1}
                     max={52}
                   />
@@ -212,7 +212,7 @@ export default function StaffShiftsPage() {
                   onClick={generate}
                   disabled={generating}
                   className="ml-auto px-4 py-1.5 text-sm font-medium text-white rounded-lg disabled:opacity-50"
-                  style={{ backgroundColor: '#06C755' }}
+                  style={{ backgroundColor: '#1C2E6E' }}
                 >
                   {generating ? '生成中…' : '生成'}
                 </button>

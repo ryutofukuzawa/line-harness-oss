@@ -5,7 +5,7 @@ import UserRow, { type UserRowData } from './user-row'
 const fmt = new Intl.NumberFormat('ja-JP')
 
 const ACCOUNT_BADGE_COLORS = [
-  'bg-emerald-100 text-emerald-700',
+  'bg-blue-100 text-blue-700',
   'bg-sky-100 text-sky-700',
   'bg-violet-100 text-violet-700',
   'bg-amber-100 text-amber-700',

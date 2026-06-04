@@ -283,7 +283,7 @@ export default function InflowLinksPage() {
           </div>
           <div className="bg-white rounded-xl p-5 border border-gray-100">
             <p className="text-sm text-gray-500">ref 経由</p>
-            <p className="text-3xl font-bold text-green-600 mt-1">{summary.friendsWithRef}</p>
+            <p className="text-3xl font-bold text-blue-600 mt-1">{summary.friendsWithRef}</p>
           </div>
           <div className="bg-white rounded-xl p-5 border border-gray-100">
             <p className="text-sm text-gray-500">ref 不明</p>

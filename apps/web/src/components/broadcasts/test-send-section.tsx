@@ -62,7 +62,7 @@ export default function TestSendSection({ broadcastId, accountId, disabled }: Te
             {sending ? 'テスト送信中...' : cooldown ? '送信済み' : 'テスト送信する'}
           </button>
           {result && (
-            <p className={`text-xs mt-2 ${result.error ? 'text-red-600' : 'text-green-600'}`}>
+            <p className={`text-xs mt-2 ${result.error ? 'text-red-600' : 'text-blue-600'}`}>
               {result.error
                 ? `${result.at} テスト送信に失敗しました`
                 : `${result.at} テスト送信済み (${result.sent}名成功${result.failed > 0 ? `, ${result.failed}名失敗` : ''})`}

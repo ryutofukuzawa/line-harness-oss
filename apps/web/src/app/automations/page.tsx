@@ -45,7 +45,7 @@ const eventTypeLabelMap: Record<AutomationEventType, string> = {
 }
 
 const eventTypeBadgeColor: Record<AutomationEventType, string> = {
-  friend_add: 'bg-green-100 text-green-700',
+  friend_add: 'bg-blue-100 text-blue-700',
   tag_change: 'bg-blue-100 text-blue-700',
   score_threshold: 'bg-yellow-100 text-yellow-700',
   cv_fire: 'bg-red-100 text-red-700',
@@ -223,7 +223,7 @@ export default function AutomationsPage() {
           <button
             onClick={() => setShowCreate(true)}
             className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規ルール
           </button>
@@ -246,7 +246,7 @@ export default function AutomationsPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">ルール名 <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例: 友だち追加時にウェルカムタグ付与"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -255,7 +255,7 @@ export default function AutomationsPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">説明</label>
               <textarea
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 rows={2}
                 placeholder="ルールの説明 (省略可)"
                 value={form.description}
@@ -265,7 +265,7 @@ export default function AutomationsPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">イベントタイプ</label>
               <select
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                 value={form.eventType}
                 onChange={(e) => setForm({ ...form, eventType: e.target.value as AutomationEventType })}
               >
@@ -277,7 +277,7 @@ export default function AutomationsPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">アクション (JSON)</label>
               <textarea
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
                 rows={6}
                 placeholder='[{"type": "add_tag", "params": {"tagId": "..."}}]'
                 value={form.actionsJson}
@@ -287,7 +287,7 @@ export default function AutomationsPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">条件 (JSON)</label>
               <textarea
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
                 rows={3}
                 placeholder='{"tagId": "...", "operator": "equals"}'
                 value={form.conditionsJson}
@@ -298,7 +298,7 @@ export default function AutomationsPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">優先度</label>
               <input
                 type="number"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={form.priority}
                 onChange={(e) => setForm({ ...form, priority: parseInt(e.target.value, 10) || 0 })}
               />
@@ -311,7 +311,7 @@ export default function AutomationsPage() {
                 onClick={handleCreate}
                 disabled={saving}
                 className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 {saving ? '作成中...' : '作成'}
               </button>
@@ -357,7 +357,7 @@ export default function AutomationsPage() {
                 <button
                   onClick={() => handleToggleActive(automation.id, automation.isActive)}
                   className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                    automation.isActive ? 'bg-green-500' : 'bg-gray-300'
+                    automation.isActive ? 'bg-blue-500' : 'bg-gray-300'
                   }`}
                   title={automation.isActive ? '有効 - クリックで無効化' : '無効 - クリックで有効化'}
                 >
@@ -380,7 +380,7 @@ export default function AutomationsPage() {
                   {eventTypeLabelMap[automation.eventType]}
                 </span>
                 <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                  automation.isActive ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
+                  automation.isActive ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-500'
                 }`}>
                   {automation.isActive ? '有効' : '無効'}
                 </span>

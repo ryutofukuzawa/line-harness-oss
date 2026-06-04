@@ -54,10 +54,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#06C755' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#1C2E6E' }}>
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg mx-auto mb-3" style={{ backgroundColor: '#06C755' }}>
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-[#16264F] font-bold text-lg mx-auto mb-3" style={{ backgroundColor: '#C2A24C' }}>
             プ
           </div>
           <h1 className="text-xl font-bold text-gray-900">プロラボ</h1>
@@ -72,7 +72,7 @@ export default function LoginPage() {
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder="APIキーを入力"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               autoFocus
             />
           </div>
@@ -85,7 +85,7 @@ export default function LoginPage() {
             type="submit"
             disabled={loading || !apiKey}
             className="w-full py-3 text-white font-medium rounded-lg transition-opacity hover:opacity-90 disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#A8842F' }}
           >
             {loading ? 'ログイン中...' : 'ログイン'}
           </button>

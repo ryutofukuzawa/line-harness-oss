@@ -101,7 +101,7 @@ export default function EventsListPage() {
                     <div className="font-semibold text-gray-900 line-clamp-2 flex-1">{e.name}</div>
                     <div className="flex flex-col gap-1 shrink-0 items-end">
                       {e.is_published === 1 ? (
-                        <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
                           公開中
                         </span>
                       ) : (

@@ -114,7 +114,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
               type="text"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="例: コスト比較"
             />
           </div>
@@ -126,7 +126,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
                   key={mt}
                   onClick={() => setMatchType(mt)}
                   className={`px-3 py-1.5 text-xs rounded-md ${matchType === mt ? 'text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                  style={matchType === mt ? { backgroundColor: '#06C755' } : undefined}
+                  style={matchType === mt ? { backgroundColor: '#1C2E6E' } : undefined}
                 >
                   {mt === 'exact' ? '完全一致' : '包含'}
                 </button>
@@ -147,7 +147,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
                   key={key}
                   onClick={() => setMode(key)}
                   className={`px-3 py-1.5 text-xs rounded-md ${mode === key ? 'text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                  style={mode === key ? { backgroundColor: '#06C755' } : undefined}
+                  style={mode === key ? { backgroundColor: '#1C2E6E' } : undefined}
                 >
                   {label}
                 </button>
@@ -160,7 +160,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
               <select
                 value={templateId ?? ''}
                 onChange={(e) => setTemplateId(e.target.value || null)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">-- 選択 --</option>
                 {flexTemplates.length > 0 && (
@@ -201,7 +201,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
                 rows={mode === 'inline-flex' ? 8 : 4}
                 value={responseContent}
                 onChange={(e) => setResponseContent(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
               />
             </div>
           )}
@@ -239,7 +239,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
               type="checkbox"
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
             <span className="text-xs text-gray-600">有効</span>
           </label>
@@ -251,7 +251,7 @@ export default function EditDialog({ draft, templates, onClose, onSaved }: Props
             onClick={handleSave}
             disabled={saving}
             className="px-3 py-1.5 text-xs font-medium text-white rounded-md disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {saving ? '保存中...' : '保存'}
           </button>

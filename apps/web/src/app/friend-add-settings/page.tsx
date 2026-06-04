@@ -284,7 +284,7 @@ function AccountSection({
           <span className="text-xs text-gray-400">{row.account.channelId}</span>
         </div>
         {isHealthy ? (
-          <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-700 font-medium">
+          <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-medium">
             アクティブ {activeCount} 件
           </span>
         ) : (
@@ -304,7 +304,7 @@ function AccountSection({
           <button
             type="button"
             onClick={onCreate}
-            className="ml-2 text-green-700 underline hover:text-green-800"
+            className="ml-2 text-blue-700 underline hover:text-blue-800"
           >
             このアカウントでシナリオを作成
           </button>
@@ -362,7 +362,7 @@ function Toggle({
       onClick={onClick}
       disabled={disabled}
       className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
-        value ? 'bg-green-500' : 'bg-gray-300'
+        value ? 'bg-blue-500' : 'bg-gray-300'
       } ${disabled ? 'opacity-50 cursor-wait' : 'cursor-pointer'}`}
       aria-label={value ? '無効化' : '有効化'}
     >

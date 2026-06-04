@@ -21,7 +21,7 @@ type RichMenuGroupListItem = {
 function StatusBadge({ status }: { status: 'draft' | 'published' }) {
   const cls =
     status === 'published'
-      ? 'bg-green-100 text-green-800'
+      ? 'bg-blue-100 text-blue-800'
       : 'bg-gray-100 text-gray-700'
   return (
     <span className={`text-xs px-2 py-0.5 rounded ${cls}`}>
@@ -166,7 +166,7 @@ export default function RichMenusListPage() {
           <Link
             href="/rich-menus/new"
             className="inline-flex items-center gap-1 px-4 py-2 text-white rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             <span className="text-lg leading-none">+</span> 新規作成
           </Link>
@@ -220,7 +220,7 @@ export default function RichMenusListPage() {
           <Link
             href="/rich-menus/new"
             className="inline-flex items-center gap-1 px-4 py-2 text-white rounded-lg text-sm font-medium transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             <span className="text-lg leading-none">+</span> 最初のメニューを作る
           </Link>
@@ -279,7 +279,7 @@ export default function RichMenusListPage() {
                   <button
                     onClick={() => setApplyTo(g)}
                     className="font-medium hover:underline"
-                    style={{ color: '#06C755' }}
+                    style={{ color: '#1C2E6E' }}
                   >
                     友だちに表示
                   </button>
@@ -474,7 +474,7 @@ function ExternalSection({
                         <button
                           onClick={() => onImport(m)}
                           className="text-xs font-medium hover:underline"
-                          style={{ color: '#06C755' }}
+                          style={{ color: '#1C2E6E' }}
                           title="管理画面に取り込んで以後 UI で操作可能にする"
                         >
                           管理画面に取り込む

@@ -242,7 +242,7 @@ export default function WebhooksPage() {
           <button
             onClick={() => setShowCreate(!showCreate)}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {showCreate ? 'キャンセル' : '+ 新規Webhook'}
           </button>
@@ -293,7 +293,7 @@ export default function WebhooksPage() {
               <button
                 type="submit"
                 className="px-4 py-2 text-sm rounded-lg text-white font-medium"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 保存
               </button>
@@ -330,7 +330,7 @@ export default function WebhooksPage() {
                   setSecretCopied(false)
                 }}
                 className="px-4 py-2 text-sm rounded-lg text-white font-medium"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 保存しました
               </button>
@@ -423,7 +423,7 @@ export default function WebhooksPage() {
           <button
             type="submit"
             className="mt-4 px-4 py-2 rounded-lg text-white text-sm font-medium"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             作成
           </button>
@@ -494,7 +494,7 @@ export default function WebhooksPage() {
           <button
             type="submit"
             className="mt-4 px-4 py-2 rounded-lg text-white text-sm font-medium"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             作成
           </button>
@@ -548,7 +548,7 @@ export default function WebhooksPage() {
                     </td>
                     <td className="px-4 py-3">
                       {wh.hasSecret ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
                           設定済
                         </span>
                       ) : (
@@ -563,7 +563,7 @@ export default function WebhooksPage() {
                         disabled={!wh.hasSecret && !wh.isActive}
                         className={`text-xs px-2 py-0.5 rounded-full disabled:opacity-50 disabled:cursor-not-allowed ${
                           wh.isActive
-                            ? 'bg-green-100 text-green-700'
+                            ? 'bg-blue-100 text-blue-700'
                             : 'bg-gray-100 text-gray-500'
                         }`}
                         title={!wh.hasSecret && !wh.isActive ? 'シークレット未設定のため有効化できません' : ''}
@@ -662,7 +662,7 @@ export default function WebhooksPage() {
                     </td>
                     <td className="px-4 py-3">
                       {wh.hasSecret ? (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
                           設定済
                         </span>
                       ) : (
@@ -677,7 +677,7 @@ export default function WebhooksPage() {
                         disabled={!canActivate && !wh.isActive}
                         className={`text-xs px-2 py-0.5 rounded-full disabled:opacity-50 disabled:cursor-not-allowed ${
                           wh.isActive
-                            ? 'bg-green-100 text-green-700'
+                            ? 'bg-blue-100 text-blue-700'
                             : 'bg-gray-100 text-gray-500'
                         }`}
                         title={blockedReason}

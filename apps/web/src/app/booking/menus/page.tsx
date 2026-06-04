@@ -73,7 +73,7 @@ export default function MenusPage() {
             onClick={() => setEditing(EMPTY)}
             disabled={!selectedAccountId}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90 disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規メニュー
           </button>
@@ -134,7 +134,7 @@ export default function MenusPage() {
                     <td className="px-4 py-3 text-sm text-right tabular-nums text-gray-500">{m.sort_order}</td>
                     <td className="px-4 py-3 text-center">
                       {m.is_active ? (
-                        <span className="inline-block px-2 py-0.5 rounded bg-green-100 text-green-800 text-xs">ON</span>
+                        <span className="inline-block px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-xs">ON</span>
                       ) : (
                         <span className="inline-block px-2 py-0.5 rounded bg-gray-100 text-gray-500 text-xs">OFF</span>
                       )}
@@ -202,7 +202,7 @@ function Modal({
               type="text"
               value={form.name ?? ''}
               onChange={(e) => set('name', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="例: カット"
             />
           </Field>
@@ -211,7 +211,7 @@ function Modal({
               type="text"
               value={form.category_label ?? ''}
               onChange={(e) => set('category_label', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="例: カット / カラー / パーマ"
             />
           </Field>
@@ -219,7 +219,7 @@ function Modal({
             <textarea
               value={form.description ?? ''}
               onChange={(e) => set('description', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
               rows={2}
               placeholder="顧客に表示される説明文"
             />
@@ -270,7 +270,7 @@ function Modal({
             onClick={submit}
             disabled={saving}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {saving ? '保存中…' : '保存'}
           </button>
@@ -304,7 +304,7 @@ function NumField({
         type="number"
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 tabular-nums"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 tabular-nums"
       />
     </Field>
   )

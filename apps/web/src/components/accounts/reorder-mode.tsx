@@ -110,7 +110,7 @@ export default function ReorderMode({ accounts, onClose, onSaved }: Props) {
             onClick={handleSave}
             disabled={saving}
             className="px-3 py-1.5 rounded-lg text-xs text-white disabled:opacity-50"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {saving ? '保存中...' : '保存'}
           </button>

@@ -71,7 +71,7 @@ export default function NewRichMenuPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="例: メインメニュー"
           />
         </div>
@@ -85,7 +85,7 @@ export default function NewRichMenuPage() {
             onChange={(e) => setChatBarText(e.target.value)}
             maxLength={14}
             required
-            className="block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="block w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <p className="mt-1 text-xs text-gray-500">
             ユーザーがトーク画面でメニューを開く前に表示される文言。
@@ -102,7 +102,7 @@ export default function NewRichMenuPage() {
                 key={t.key}
                 className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${
                   templateKey === t.key
-                    ? 'border-green-500 bg-green-50'
+                    ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:bg-gray-50'
                 }`}
               >
@@ -147,7 +147,7 @@ export default function NewRichMenuPage() {
             type="submit"
             disabled={submitting || !selectedAccount}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {submitting ? '作成中...' : '作成して編集へ'}
           </button>

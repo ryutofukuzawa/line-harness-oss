@@ -139,7 +139,7 @@ export default function ScoringPage() {
           <button
             onClick={() => setShowCreate(true)}
             className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             + 新規ルール
           </button>
@@ -155,7 +155,7 @@ export default function ScoringPage() {
           </div>
           <div className="bg-white rounded-lg border border-gray-200 p-4">
             <p className="text-xs text-gray-500">有効なルール</p>
-            <p className="text-2xl font-bold" style={{ color: '#06C755' }}>{activeRules}</p>
+            <p className="text-2xl font-bold" style={{ color: '#1C2E6E' }}>{activeRules}</p>
           </div>
         </div>
       )}
@@ -176,7 +176,7 @@ export default function ScoringPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">ルール名 <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例: メッセージ開封"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -186,7 +186,7 @@ export default function ScoringPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">イベントタイプ <span className="text-red-500">*</span></label>
               <input
                 type="text"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例: message_open, url_click, friend_add"
                 value={form.eventType}
                 onChange={(e) => setForm({ ...form, eventType: e.target.value })}
@@ -196,7 +196,7 @@ export default function ScoringPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">スコア値 <span className="text-red-500">*</span></label>
               <input
                 type="number"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例: 10 (正の値で加算、負の値で減算)"
                 value={form.scoreValue}
                 onChange={(e) => setForm({ ...form, scoreValue: e.target.value })}
@@ -210,7 +210,7 @@ export default function ScoringPage() {
                 onClick={handleCreate}
                 disabled={saving}
                 className="px-4 py-2 text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-                style={{ backgroundColor: '#06C755' }}
+                style={{ backgroundColor: '#1C2E6E' }}
               >
                 {saving ? '作成中...' : '作成'}
               </button>
@@ -251,7 +251,7 @@ export default function ScoringPage() {
                     <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">{rule.eventType}</span>
                   </td>
                   <td className="px-4 py-3 text-sm font-semibold">
-                    <span style={{ color: rule.scoreValue >= 0 ? '#06C755' : '#EF4444' }}>
+                    <span style={{ color: rule.scoreValue >= 0 ? '#1C2E6E' : '#EF4444' }}>
                       {rule.scoreValue >= 0 ? `+${rule.scoreValue}` : rule.scoreValue}
                     </span>
                   </td>
@@ -259,7 +259,7 @@ export default function ScoringPage() {
                     <button
                       onClick={() => handleToggleActive(rule.id, rule.isActive)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        rule.isActive ? 'bg-green-500' : 'bg-gray-300'
+                        rule.isActive ? 'bg-blue-500' : 'bg-gray-300'
                       }`}
                     >
                       <span

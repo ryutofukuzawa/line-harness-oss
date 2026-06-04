@@ -123,7 +123,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
           </label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="例: 3月のキャンペーン告知"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -141,7 +141,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
                 onClick={() => setForm({ ...form, messageType: type })}
                 className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                   form.messageType === type
-                    ? 'border-green-500 text-green-700 bg-green-50'
+                    ? 'border-blue-500 text-blue-700 bg-blue-50'
                     : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
                 }`}
               >
@@ -221,7 +221,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
             </div>
           )}
           <textarea
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
             rows={form.messageType === 'flex' ? 8 : form.messageType === 'image' ? 3 : 4}
             placeholder={
               form.messageType === 'text'
@@ -256,7 +256,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
               onClick={() => setForm({ ...form, targetType: 'all', targetTagId: '' })}
               className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                 form.targetType === 'all'
-                  ? 'border-green-500 text-green-700 bg-green-50'
+                  ? 'border-blue-500 text-blue-700 bg-blue-50'
                   : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
               }`}
             >
@@ -267,7 +267,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
               onClick={() => setForm({ ...form, targetType: 'tag' })}
               className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                 form.targetType === 'tag'
-                  ? 'border-green-500 text-green-700 bg-green-50'
+                  ? 'border-blue-500 text-blue-700 bg-blue-50'
                   : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
               }`}
             >
@@ -278,7 +278,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
               onClick={() => setForm({ ...form, targetType: 'multi-account-dedup', targetTagId: '' })}
               className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                 form.targetType === 'multi-account-dedup'
-                  ? 'border-green-500 text-green-700 bg-green-50'
+                  ? 'border-blue-500 text-blue-700 bg-blue-50'
                   : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
               }`}
             >
@@ -287,7 +287,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
           </div>
           {form.targetType === 'tag' && (
             <select
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               value={form.targetTagId}
               onChange={(e) => setForm({ ...form, targetTagId: e.target.value })}
             >
@@ -319,7 +319,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
               onClick={() => setForm({ ...form, sendNow: true, scheduledAt: '' })}
               className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                 form.sendNow
-                  ? 'border-green-500 text-green-700 bg-green-50'
+                  ? 'border-blue-500 text-blue-700 bg-blue-50'
                   : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
               }`}
             >
@@ -330,7 +330,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
               onClick={() => setForm({ ...form, sendNow: false })}
               className={`px-3 py-1.5 min-h-[44px] text-xs font-medium rounded-md border transition-colors ${
                 !form.sendNow
-                  ? 'border-green-500 text-green-700 bg-green-50'
+                  ? 'border-blue-500 text-blue-700 bg-blue-50'
                   : 'border-gray-300 text-gray-600 bg-white hover:border-gray-400'
               }`}
             >
@@ -340,7 +340,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
           {!form.sendNow && (
             <input
               type="datetime-local"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={form.scheduledAt}
               onChange={(e) => setForm({ ...form, scheduledAt: e.target.value })}
             />
@@ -356,7 +356,7 @@ export default function BroadcastForm({ tags, onSuccess, onCancel }: BroadcastFo
             onClick={handleSave}
             disabled={saving}
             className="px-4 py-2 min-h-[44px] text-sm font-medium text-white rounded-lg disabled:opacity-50 transition-opacity"
-            style={{ backgroundColor: '#06C755' }}
+            style={{ backgroundColor: '#1C2E6E' }}
           >
             {saving ? '作成中...' : '作成'}
           </button>

@@ -138,7 +138,7 @@ export default function FriendTable({ friends, allTags, onRefresh }: FriendTable
                   {/* Following status */}
                   <td className="px-4 py-3">
                     {friend.isFollowing ? (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
                         フォロー中
                       </span>
                     ) : (
@@ -206,7 +206,7 @@ export default function FriendTable({ friends, allTags, onRefresh }: FriendTable
                           {isAddingTag ? (
                             <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                               <select
-                                className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 value={selectedTagId}
                                 onChange={(e) => setSelectedTagId(e.target.value)}
                               >
@@ -219,7 +219,7 @@ export default function FriendTable({ friends, allTags, onRefresh }: FriendTable
                                 onClick={() => handleAddTag(friend.id)}
                                 disabled={!selectedTagId || loading}
                                 className="px-3 py-1 text-xs font-medium rounded-md text-white disabled:opacity-50 transition-opacity"
-                                style={{ backgroundColor: '#06C755' }}
+                                style={{ backgroundColor: '#1C2E6E' }}
                               >
                                 追加
                               </button>
@@ -234,7 +234,7 @@ export default function FriendTable({ friends, allTags, onRefresh }: FriendTable
                             availableTags.length > 0 && (
                               <button
                                 onClick={(e) => { e.stopPropagation(); setAddingTagForFriend(friend.id) }}
-                                className="text-xs font-medium text-green-600 hover:text-green-700 flex items-center gap-1 transition-colors"
+                                className="text-xs font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
                               >
                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
