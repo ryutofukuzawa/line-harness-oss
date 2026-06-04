@@ -875,3 +875,13 @@ CREATE TABLE IF NOT EXISTS broadcast_requests (
   sent_at        TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_broadcast_requests_status ON broadcast_requests (status, created_at);
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: スタッフ↔店舗(OA)割当（店舗スコープの担当チャット）
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS staff_store_assignments (
+  staff_id        TEXT NOT NULL,
+  line_account_id TEXT NOT NULL,
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours')),
+  PRIMARY KEY (staff_id, line_account_id)
+);
