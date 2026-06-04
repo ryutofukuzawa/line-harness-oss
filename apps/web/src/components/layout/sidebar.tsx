@@ -76,6 +76,26 @@ const menuSections = [
   },
 ]
 
+// ─── レイヤー別の表示許可リスト（機能分け要件定義に準拠） ───
+// 値=表示を許可するレイヤー。ここに無いhrefは全レイヤーで非表示。
+const FEATURE_LAYERS: Record<string, Array<'exec' | 'area' | 'store' | 'field'>> = {
+  '/': ['exec', 'area', 'store', 'field'],
+  '/friends': ['exec', 'area', 'store', 'field'],
+  '/store-chats': ['exec', 'area', 'store', 'field'],
+  '/booking/bookings': ['exec', 'area', 'store', 'field'],
+  '/risk-alerts': ['exec', 'area', 'store'],
+  '/segment-cast': ['exec', 'area', 'store'],
+  '/broadcast-governance': ['exec', 'area', 'store'],
+  '/form-submissions': ['exec', 'area', 'store'],
+  '/inflow-links': ['exec', 'area', 'store'],
+  '/rich-menus': ['exec', 'area'],
+  '/friend-add-settings': ['exec', 'area'],
+  '/users': ['exec', 'area'],
+  '/crm-sync': ['exec'],
+  '/staff': ['exec'],
+  '/accounts': ['exec'],
+}
+
 function AccountAvatar({ account, size = 32 }: { account: AccountWithStats; size?: number }) {
   const displayName = account.displayName || account.name
   if (account.pictureUrl) {
@@ -200,9 +220,20 @@ export default function Sidebar() {
   const [staffName, setStaffName] = useState<string | null>(null)
   const [staffRole, setStaffRole] = useState<string | null>(null)
 
+  const [layer, setLayer] = useState<'exec' | 'area' | 'store' | 'field' | null>(null)
+
   useEffect(() => {
     setStaffName(localStorage.getItem('lh_staff_name'))
     setStaffRole(localStorage.getItem('lh_staff_role'))
+    // レイヤー(経営層/エリア/店長/現場)を取得してメニューを出し分け
+    const base = process.env.NEXT_PUBLIC_API_URL
+    const key = typeof window !== 'undefined' ? localStorage.getItem('lh_api_key') : ''
+    if (base && key) {
+      fetch(`${base}/api/org/me`, { headers: { Authorization: `Bearer ${key}` } })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => { if (d?.layer) setLayer(d.layer) })
+        .catch(() => {})
+    }
   }, [])
 
   // 未対応件数 polling — メニュー項目にバッジを出す。5 分間隔。
@@ -254,18 +285,22 @@ export default function Sidebar() {
 
       {/* ナビゲーション */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {menuSections.map((section, si) => (
+        {menuSections.map((section, si) => {
+          // レイヤー別フィルタ: 許可リストに無い機能は全員非表示。レイヤー未取得時は最小(現場)で表示し誤露出を防ぐ。
+          const eff = layer ?? 'field'
+          const visibleItems = section.items.filter((item) => {
+            const allowed = FEATURE_LAYERS[item.href]
+            return !!allowed && allowed.includes(eff)
+          })
+          if (visibleItems.length === 0) return null
+          return (
           <div key={si}>
             {section.label && (
               <div className="pt-5 pb-2 px-3">
                 <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{section.label}</p>
               </div>
             )}
-            {section.items.filter((item) => {
-              if (item.href === '/staff' && staffRole !== 'owner') return false
-              if (item.href === '/accounts' && staffRole === 'staff') return false
-              return true
-            }).map((item) => {
+            {visibleItems.map((item) => {
               const active = isActive(item.href)
               const isDanger = 'danger' in item && item.danger
               return (
@@ -296,7 +331,8 @@ export default function Sidebar() {
               )
             })}
           </div>
-        ))}
+          )
+        })}
       </nav>
 
       {/* フッター */}
