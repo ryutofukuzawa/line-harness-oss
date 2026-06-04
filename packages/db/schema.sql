@@ -900,3 +900,16 @@ CREATE TABLE IF NOT EXISTS segment_casts (
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
 );
 CREATE INDEX IF NOT EXISTS idx_segment_casts_account ON segment_casts (line_account_id, created_at);
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: CRM/Salesforce 属性取込ログ（顧客属性→friends.metadata）
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS crm_sync_log (
+  id         TEXT PRIMARY KEY,
+  source     TEXT NOT NULL,
+  key_field  TEXT,
+  matched    INTEGER NOT NULL DEFAULT 0,
+  unmatched  INTEGER NOT NULL DEFAULT 0,
+  run_by     TEXT,
+  created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
+);
