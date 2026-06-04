@@ -1,166 +1,154 @@
 /**
- * プロラボ独自機能: 全店横断 一斉配信の承認ガバナンス
- * 起案(pending) → 承認/却下 → 送信。起案者と承認者を分離し、頻度上限で自動除外。
+ * プロラボ独自機能: 階層的 配信申請・承認ガバナンス（4階層）
+ * 起案: 店長=自店 / エリアMgr=担当エリア / 経営層=全店・任意。
+ * 承認: 経営層のみ。承認したら配信が実行される。頻度上限で自動除外。
  *
- * GET  /api/broadcast-requests?status=pending|approved|rejected|sent|all
- * POST /api/broadcast-requests/dry-run   { message? }     -> 送信対象の試算(店舗別内訳・頻度除外)
- * POST /api/broadcast-requests           { title, message, scope? }
- * POST /api/broadcast-requests/:id/approve
- * POST /api/broadcast-requests/:id/reject
- * POST /api/broadcast-requests/:id/send
+ * GET  /api/org/me
+ * POST /api/broadcast-requests/dry-run { scope, areaId?, lineAccountId? }
+ * POST /api/broadcast-requests         { title, message, scope, areaId?, lineAccountId? }
+ * GET  /api/broadcast-requests?status=
+ * POST /api/broadcast-requests/:id/approve   （経営層）
+ * POST /api/broadcast-requests/:id/reject     （経営層）
  */
 import { Hono } from 'hono';
 import type { Env } from '../index.js';
+import { resolveOrg, proposableScopes, LAYER_LABEL, type Layer } from '../lib/org.js';
 
 export const broadcastGovernance = new Hono<Env>();
 
-const FREQ_CAP = 4; // 直近7日でこの回数以上配信済みの友だちは自動除外
+const FREQ_CAP = 4;
 const WINDOW_DAYS = 7;
+const jstNow = () => new Date(Date.now() + 9 * 60 * 60_000).toISOString().slice(0, -1) + '+09:00';
+const actor = (c: any) => { try { return c.get('staff')?.name || 'Owner'; } catch { return 'Owner'; } };
 
-function jstNow(): string {
-  return new Date(Date.now() + 9 * 60 * 60_000).toISOString().slice(0, -1) + '+09:00';
-}
-function actor(c: { get: (k: 'staff') => { name?: string } | undefined }): string {
-  try {
-    return c.get('staff')?.name || 'Owner';
-  } catch {
-    return 'Owner';
+/** scope に応じた対象店舗idリストを、権限チェック込みで返す。許可外は null。 */
+async function scopedStoreIds(
+  db: D1Database, org: Awaited<ReturnType<typeof resolveOrg>>,
+  scope: string, areaId?: string, lineAccountId?: string,
+): Promise<string[] | null> {
+  if (scope === 'all') {
+    if (org.layer !== 'exec') return null;
+    const r = await db.prepare(`SELECT id FROM line_accounts WHERE is_active=1`).all<{ id: string }>();
+    return (r.results ?? []).map((x) => x.id);
   }
+  if (scope === 'area') {
+    if (!areaId) return null;
+    if (org.layer !== 'exec' && org.areaId !== areaId) return null;
+    const r = await db.prepare(`SELECT id FROM line_accounts WHERE is_active=1 AND area_id=?`).bind(areaId).all<{ id: string }>();
+    return (r.results ?? []).map((x) => x.id);
+  }
+  if (scope === 'store') {
+    if (!lineAccountId) return null;
+    if (!org.allStores && !org.storeIds.includes(lineAccountId)) return null;
+    return [lineAccountId];
+  }
+  return null;
 }
 
-interface Audience {
-  total: number;
-  excluded: number;
-  target: number;
-  perStore: Array<{ accountId: string; name: string; count: number }>;
-  freqCap: number;
-  windowDays: number;
-}
-
-async function computeAudience(db: D1Database): Promise<Audience> {
-  // 全店横断 = フォロー中の友だち全員（友だちはアカウント横断でグローバル）
-  const totalRow = await db
-    .prepare(`SELECT COUNT(*) AS n FROM friends WHERE is_following = 1`)
-    .first<{ n: number }>();
+async function audience(db: D1Database, storeIds: string[]) {
+  if (storeIds.length === 0) return { total: 0, excluded: 0, target: 0, perStore: [] as any[] };
+  const ph = storeIds.map(() => '?').join(',');
+  const totalRow = await db.prepare(`SELECT COUNT(*) AS n FROM friends WHERE is_following=1 AND line_account_id IN (${ph})`).bind(...storeIds).first<{ n: number }>();
+  const excludedRow = await db.prepare(
+    `SELECT COUNT(*) AS n FROM (
+       SELECT m.friend_id FROM messages_log m JOIN friends f ON f.id=m.friend_id
+       WHERE m.broadcast_id IS NOT NULL AND f.line_account_id IN (${ph})
+         AND m.created_at >= datetime('now','-${WINDOW_DAYS} days','+9 hours')
+       GROUP BY m.friend_id HAVING COUNT(*) >= ${FREQ_CAP})`,
+  ).bind(...storeIds).first<{ n: number }>();
+  const per = await db.prepare(
+    `SELECT la.id AS accountId, la.name, COUNT(f.id) AS count
+     FROM line_accounts la LEFT JOIN friends f ON f.line_account_id=la.id AND f.is_following=1
+     WHERE la.id IN (${ph}) GROUP BY la.id, la.name ORDER BY la.display_order, la.name`,
+  ).bind(...storeIds).all();
   const total = totalRow?.n ?? 0;
-
-  // 頻度上限で除外: 直近WINDOW_DAYS日で FREQ_CAP 回以上 broadcast を受け取った友だち
-  const excludedRow = await db
-    .prepare(
-      `SELECT COUNT(*) AS n FROM (
-         SELECT friend_id FROM messages_log
-         WHERE broadcast_id IS NOT NULL
-           AND created_at >= datetime('now', '-${WINDOW_DAYS} days', '+9 hours')
-         GROUP BY friend_id
-         HAVING COUNT(*) >= ${FREQ_CAP}
-       )`,
-    )
-    .first<{ n: number }>();
   const excluded = excludedRow?.n ?? 0;
-
-  // 店舗(OA)別の到達内訳: messages_log で各アカウントと接点のあるフォロー中の友だち数
-  const perStoreRes = await db
-    .prepare(
-      `SELECT la.id AS accountId, la.name AS name,
-              COUNT(DISTINCT ml.friend_id) AS count
-       FROM line_accounts la
-       LEFT JOIN messages_log ml ON ml.line_account_id = la.id
-       LEFT JOIN friends f ON f.id = ml.friend_id AND f.is_following = 1
-       WHERE la.is_active = 1
-       GROUP BY la.id, la.name
-       ORDER BY la.display_order, la.name`,
-    )
-    .all<{ accountId: string; name: string; count: number }>();
-
-  return {
-    total,
-    excluded,
-    target: Math.max(0, total - excluded),
-    perStore: perStoreRes.results ?? [],
-    freqCap: FREQ_CAP,
-    windowDays: WINDOW_DAYS,
-  };
+  return { total, excluded, target: Math.max(0, total - excluded), perStore: per.results ?? [] };
 }
 
-broadcastGovernance.post('/api/broadcast-requests/dry-run', async (c) => {
-  const aud = await computeAudience(c.env.DB);
-  return c.json(aud);
+broadcastGovernance.get('/api/org/me', async (c) => {
+  const staff = c.get('staff') as any;
+  const org = await resolveOrg(c.env.DB, staff);
+  const stores = org.storeIds.length
+    ? (await c.env.DB.prepare(`SELECT id, name, area_id FROM line_accounts WHERE id IN (${org.storeIds.map(() => '?').join(',')})`).bind(...org.storeIds).all()).results
+    : [];
+  const areas = (await c.env.DB.prepare(`SELECT id, name FROM areas ORDER BY sort_order`).all()).results ?? [];
+  let areaName: string | null = null;
+  if (org.areaId) areaName = (areas.find((a: any) => a.id === org.areaId) as any)?.name ?? null;
+  return c.json({
+    layer: org.layer, layerLabel: LAYER_LABEL[org.layer],
+    areaId: org.areaId, areaName,
+    stores, areas: org.layer === 'exec' ? areas : areas.filter((a: any) => a.id === org.areaId),
+    proposableScopes: proposableScopes(org.layer),
+    canApprove: org.layer === 'exec',
+  });
 });
 
-broadcastGovernance.get('/api/broadcast-requests', async (c) => {
-  const status = new URL(c.req.url).searchParams.get('status') ?? 'all';
-  const where = status === 'all' ? '' : 'WHERE status = ?';
-  const stmt = c.env.DB.prepare(
-    `SELECT * FROM broadcast_requests ${where} ORDER BY created_at DESC LIMIT 200`,
-  );
-  const res = await (where ? stmt.bind(status) : stmt).all();
-  return c.json({ data: res.results });
+broadcastGovernance.post('/api/broadcast-requests/dry-run', async (c) => {
+  const staff = c.get('staff') as any;
+  const org = await resolveOrg(c.env.DB, staff);
+  const b = (await c.req.json().catch(() => ({}))) as any;
+  const ids = await scopedStoreIds(c.env.DB, org, b.scope, b.areaId, b.lineAccountId);
+  if (ids === null) return c.json({ error: 'この配信範囲を起案する権限がありません' }, 403);
+  return c.json({ ...(await audience(c.env.DB, ids)), freqCap: FREQ_CAP, windowDays: WINDOW_DAYS });
 });
 
 broadcastGovernance.post('/api/broadcast-requests', async (c) => {
-  const body = (await c.req.json().catch(() => ({}))) as { title?: string; message?: string; scope?: string };
-  const title = (body.title ?? '').toString().trim();
-  const message = (body.message ?? '').toString().trim();
+  const staff = c.get('staff') as any;
+  const org = await resolveOrg(c.env.DB, staff);
+  const b = (await c.req.json().catch(() => ({}))) as any;
+  const title = (b.title ?? '').toString().trim();
+  const message = (b.message ?? '').toString().trim();
   if (!title || !message) return c.json({ error: 'title and message required' }, 400);
-
-  const aud = await computeAudience(c.env.DB);
+  const ids = await scopedStoreIds(c.env.DB, org, b.scope, b.areaId, b.lineAccountId);
+  if (ids === null) return c.json({ error: 'この配信範囲を起案する権限がありません' }, 403);
+  const aud = await audience(c.env.DB, ids);
   const id = crypto.randomUUID();
   await c.env.DB.prepare(
     `INSERT INTO broadcast_requests
-       (id, title, message, scope, target_count, excluded_count, per_store, status, proposed_by, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)`,
-  )
-    .bind(
-      id,
-      title,
-      message,
-      body.scope ?? 'all',
-      aud.target,
-      aud.excluded,
-      JSON.stringify(aud.perStore),
-      actor(c),
-      jstNow(),
-    )
-    .run();
+       (id,title,message,scope,area_id,line_account_id,target_count,excluded_count,per_store,status,proposed_by,proposed_layer,created_at)
+     VALUES (?,?,?,?,?,?,?,?,?, 'pending', ?, ?, ?)`,
+  ).bind(id, title, message, b.scope, b.areaId ?? null, b.lineAccountId ?? null, aud.target, aud.excluded, JSON.stringify(aud.perStore), actor(c), org.layer, jstNow()).run();
   return c.json({ id, status: 'pending', ...aud });
 });
 
+broadcastGovernance.get('/api/broadcast-requests', async (c) => {
+  const staff = c.get('staff') as any;
+  const org = await resolveOrg(c.env.DB, staff);
+  const status = new URL(c.req.url).searchParams.get('status') ?? 'all';
+  const conds: string[] = [];
+  const binds: unknown[] = [];
+  if (status !== 'all') { conds.push('status = ?'); binds.push(status); }
+  if (org.layer !== 'exec') {
+    // 自分の起案 OR 自分の店舗/エリアに関係する申請のみ
+    const ors: string[] = ['proposed_by = ?']; binds.push(actor(c));
+    if (org.storeIds.length) { ors.push(`line_account_id IN (${org.storeIds.map(() => '?').join(',')})`); binds.push(...org.storeIds); }
+    if (org.areaId) { ors.push('area_id = ?'); binds.push(org.areaId); }
+    conds.push('(' + ors.join(' OR ') + ')');
+  }
+  const where = conds.length ? 'WHERE ' + conds.join(' AND ') : '';
+  const res = await c.env.DB.prepare(`SELECT * FROM broadcast_requests ${where} ORDER BY created_at DESC LIMIT 200`).bind(...binds).all();
+  return c.json({ data: res.results ?? [], canApprove: org.layer === 'exec' });
+});
+
 broadcastGovernance.post('/api/broadcast-requests/:id/approve', async (c) => {
+  const org = await resolveOrg(c.env.DB, c.get('staff') as any);
+  if (org.layer !== 'exec') return c.json({ error: '承認は経営層のみ可能です' }, 403);
   const id = c.req.param('id');
-  const row = await c.env.DB.prepare(`SELECT status, proposed_by FROM broadcast_requests WHERE id = ?`)
-    .bind(id)
-    .first<{ status: string; proposed_by: string }>();
+  const row = await c.env.DB.prepare(`SELECT status FROM broadcast_requests WHERE id=?`).bind(id).first<{ status: string }>();
   if (!row) return c.json({ error: 'not found' }, 404);
   if (row.status !== 'pending') return c.json({ error: `承認できません（現在: ${row.status}）` }, 409);
-  await c.env.DB.prepare(
-    `UPDATE broadcast_requests SET status='approved', approved_by=?, decided_at=? WHERE id=?`,
-  )
-    .bind(actor(c), jstNow(), id)
-    .run();
-  return c.json({ ok: true, status: 'approved' });
+  // 承認＝配信実行（実LINE配信は各OA接続後に既存送信系へ接続。現時点は実行確定を記録）
+  await c.env.DB.prepare(`UPDATE broadcast_requests SET status='sent', approved_by=?, decided_at=?, sent_at=? WHERE id=?`)
+    .bind(actor(c), jstNow(), jstNow(), id).run();
+  return c.json({ ok: true, status: 'sent' });
 });
 
 broadcastGovernance.post('/api/broadcast-requests/:id/reject', async (c) => {
+  const org = await resolveOrg(c.env.DB, c.get('staff') as any);
+  if (org.layer !== 'exec') return c.json({ error: '却下は経営層のみ可能です' }, 403);
   const id = c.req.param('id');
-  await c.env.DB.prepare(
-    `UPDATE broadcast_requests SET status='rejected', approved_by=?, decided_at=? WHERE id=? AND status='pending'`,
-  )
-    .bind(actor(c), jstNow(), id)
-    .run();
+  await c.env.DB.prepare(`UPDATE broadcast_requests SET status='rejected', approved_by=?, decided_at=? WHERE id=? AND status='pending'`)
+    .bind(actor(c), jstNow(), id).run();
   return c.json({ ok: true, status: 'rejected' });
-});
-
-broadcastGovernance.post('/api/broadcast-requests/:id/send', async (c) => {
-  const id = c.req.param('id');
-  const row = await c.env.DB.prepare(`SELECT status FROM broadcast_requests WHERE id = ?`)
-    .bind(id)
-    .first<{ status: string }>();
-  if (!row) return c.json({ error: 'not found' }, 404);
-  if (row.status !== 'approved') return c.json({ error: '承認後のみ送信できます' }, 409);
-  // NOTE: 実際のLINE配信は各OA接続後に既存 broadcast 送信パイプラインへ接続する。
-  // 現時点では承認済み配信を「送信済み」として記録する（ガバナンス確定）。
-  await c.env.DB.prepare(`UPDATE broadcast_requests SET status='sent', sent_at=? WHERE id=?`)
-    .bind(jstNow(), id)
-    .run();
-  return c.json({ ok: true, status: 'sent' });
 });

@@ -913,3 +913,15 @@ CREATE TABLE IF NOT EXISTS crm_sync_log (
   run_by     TEXT,
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: 4階層ロール（経営層/エリアMgr/店長/現場）とエリア
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS areas (id TEXT PRIMARY KEY, name TEXT NOT NULL, sort_order INTEGER DEFAULT 0);
+CREATE TABLE IF NOT EXISTS org_scopes (
+  staff_id TEXT PRIMARY KEY,
+  layer    TEXT NOT NULL CHECK (layer IN ('exec','area','store','field')),
+  area_id  TEXT
+);
+-- 既存テーブルへの追加列（fresh installは別途ALTER）:
+--   line_accounts.area_id, broadcast_requests.area_id / line_account_id / proposed_layer

@@ -11,28 +11,22 @@
 import { Hono } from 'hono';
 import type { Env } from '../index.js';
 import { requireRole } from '../middleware/role-guard.js';
+import { resolveOrg } from '../lib/org.js';
 
 export const storeChats = new Hono<Env>();
 
 type Staff = { id: string; name: string; role: 'owner' | 'admin' | 'staff' };
 
+// 4階層ロールで閲覧可能な店舗を解決（経営層=全店, エリアMgr=担当エリア, 店長/現場=自店）
 async function accessibleAccounts(db: D1Database, staff: Staff) {
-  if (staff.role === 'owner' || staff.role === 'admin') {
-    const r = await db
-      .prepare(`SELECT id, name FROM line_accounts WHERE is_active = 1 ORDER BY display_order, name`)
-      .all<{ id: string; name: string }>();
-    return { accounts: r.results ?? [], scoped: false };
-  }
+  const org = await resolveOrg(db, staff);
+  if (org.storeIds.length === 0) return { accounts: [], scoped: !org.allStores };
+  const ph = org.storeIds.map(() => '?').join(',');
   const r = await db
-    .prepare(
-      `SELECT la.id, la.name FROM line_accounts la
-       JOIN staff_store_assignments a ON a.line_account_id = la.id
-       WHERE a.staff_id = ? AND la.is_active = 1
-       ORDER BY la.display_order, la.name`,
-    )
-    .bind(staff.id)
+    .prepare(`SELECT id, name FROM line_accounts WHERE is_active = 1 AND id IN (${ph}) ORDER BY display_order, name`)
+    .bind(...org.storeIds)
     .all<{ id: string; name: string }>();
-  return { accounts: r.results ?? [], scoped: true };
+  return { accounts: r.results ?? [], scoped: !org.allStores };
 }
 
 storeChats.get('/api/store-chats/accounts', async (c) => {

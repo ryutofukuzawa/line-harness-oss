@@ -9,6 +9,7 @@
  */
 import { Hono } from 'hono';
 import type { Env } from '../index.js';
+import { resolveOrg } from '../lib/org.js';
 
 export const segmentCast = new Hono<Env>();
 
@@ -23,16 +24,10 @@ interface Filters {
   lastContactDaysMax?: number; // 最終接触からの経過(以内)
 }
 
+// 4階層ロールでアクセス可否を判定（経営層=全店, エリアMgr=担当エリア, 店長/現場=自店）
 async function canAccess(db: D1Database, staff: Staff, accountId: string): Promise<boolean> {
-  if (staff.role === 'owner' || staff.role === 'admin') {
-    const r = await db.prepare(`SELECT 1 AS ok FROM line_accounts WHERE id = ? AND is_active = 1`).bind(accountId).first();
-    return !!r;
-  }
-  const r = await db
-    .prepare(`SELECT 1 AS ok FROM staff_store_assignments WHERE staff_id = ? AND line_account_id = ?`)
-    .bind(staff.id, accountId)
-    .first();
-  return !!r;
+  const org = await resolveOrg(db, staff);
+  return org.allStores || org.storeIds.includes(accountId);
 }
 
 /** filters → WHERE句 + bindings（friends f を対象、store/follow は呼び出し側で前置） */
