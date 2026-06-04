@@ -76,7 +76,7 @@ segmentCast.post('/api/segment-cast/preview', async (c) => {
 
 segmentCast.post('/api/segment-cast', async (c) => {
   const staff = c.get('staff') as Staff;
-  const b = (await c.req.json().catch(() => ({}))) as { lineAccountId?: string; filters?: Filters; message?: string };
+  const b = (await c.req.json().catch(() => ({}))) as { lineAccountId?: string; filters?: Filters; message?: string; imageUrl?: string };
   if (!b.lineAccountId || !b.message?.trim()) return c.json({ error: 'lineAccountId and message required' }, 400);
   if (!(await canAccess(c.env.DB, staff, b.lineAccountId))) return c.json({ error: 'この店舗へのアクセス権がありません' }, 403);
 
@@ -89,10 +89,10 @@ segmentCast.post('/api/segment-cast', async (c) => {
   const id = crypto.randomUUID();
   // NOTE: 実際のLINE送信は各OA接続後に既存配信パイプラインへ接続。現時点は配信ログを記録。
   await c.env.DB.prepare(
-    `INSERT INTO segment_casts (id, line_account_id, message, filters, target_count, sent_by, status, created_at)
-     VALUES (?, ?, ?, ?, ?, ?, 'sent', ?)`,
+    `INSERT INTO segment_casts (id, line_account_id, message, image_url, filters, target_count, sent_by, status, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 'sent', ?)`,
   )
-    .bind(id, b.lineAccountId, b.message, JSON.stringify(b.filters ?? {}), target, staff?.name ?? 'Owner', jstNow())
+    .bind(id, b.lineAccountId, b.message, (b.imageUrl ?? '').toString().trim() || null, JSON.stringify(b.filters ?? {}), target, staff?.name ?? 'Owner', jstNow())
     .run();
   return c.json({ id, target });
 });

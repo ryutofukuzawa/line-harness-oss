@@ -37,6 +37,7 @@ export default function BroadcastGovernancePage() {
   const [storeId, setStoreId] = useState('')
   const [title, setTitle] = useState('')
   const [message, setMessage] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const [aud, setAud] = useState<Aud | null>(null)
   const [busy, setBusy] = useState(false)
   const [reqs, setReqs] = useState<Req[]>([])
@@ -67,7 +68,7 @@ export default function BroadcastGovernancePage() {
   const submit = async () => {
     if (!title.trim() || !message.trim() || !aud) return
     setBusy(true); setErr(null)
-    try { await call('/api/broadcast-requests', { method: 'POST', body: JSON.stringify({ ...params(), title, message }) }); setTitle(''); setMessage(''); setAud(null); load() }
+    try { await call('/api/broadcast-requests', { method: 'POST', body: JSON.stringify({ ...params(), title, message, imageUrl }) }); setTitle(''); setMessage(''); setImageUrl(''); setAud(null); load() }
     catch (e) { setErr((e as Error).message) } finally { setBusy(false) }
   }
   const act = async (id: string, action: 'approve' | 'reject') => {
@@ -120,7 +121,12 @@ export default function BroadcastGovernancePage() {
                 )}
               </div>
               <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="配信タイトル（社内管理用）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
-              <textarea value={message} onChange={(e) => { setMessage(e.target.value); reset() }} rows={4} placeholder="配信メッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+              <textarea value={message} onChange={(e) => { setMessage(e.target.value); reset() }} rows={4} placeholder="配信メッセージ本文（テキスト）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+              <div>
+                <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="画像URL（任意・テキストと一緒に配信）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+                {imageUrl.trim() && <img src={imageUrl} alt="プレビュー" className="mt-2 max-h-32 rounded-lg border border-gray-200" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />}
+                <p className="text-[11px] text-gray-400 mt-1">テキスト＋画像を同時配信（LINE接続後に画像＋テキストの2メッセージで送信）。</p>
+              </div>
               <button onClick={dryRun} disabled={busy} className="w-full py-2 rounded-lg border border-blue-500 text-blue-700 text-sm font-medium hover:bg-blue-50 disabled:opacity-40">② ドライラン（対象を試算）</button>
               {err && <div className="text-xs text-rose-600">{err}</div>}
               {aud && (

@@ -31,6 +31,7 @@ export default function SegmentCastPage() {
   const [course, setCourse] = useState('')
   const [scoreMin, setScoreMin] = useState('')
   const [message, setMessage] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
 
   const [preview, setPreview] = useState<{ count: number; sample: SampleRow[] } | null>(null)
   const [busy, setBusy] = useState(false)
@@ -69,9 +70,9 @@ export default function SegmentCastPage() {
     if (!active || !message.trim() || !preview) return
     setBusy(true)
     try {
-      const r = await call('/api/segment-cast', { method: 'POST', body: JSON.stringify({ lineAccountId: active, filters: filters(), message }) })
+      const r = await call('/api/segment-cast', { method: 'POST', body: JSON.stringify({ lineAccountId: active, filters: filters(), message, imageUrl }) })
       setFlash(`セグメント配信を実行しました（対象 ${r.target} 件）`)
-      setMessage(''); setPreview(null); loadHistory(active)
+      setMessage(''); setImageUrl(''); setPreview(null); loadHistory(active)
       setTimeout(() => setFlash(null), 4000)
     } finally { setBusy(false) }
   }
@@ -138,7 +139,9 @@ export default function SegmentCastPage() {
           {/* メッセージ */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
             <div className="text-sm font-semibold text-gray-700">③ メッセージを送信</div>
-            <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} placeholder="このセグメント向けのメッセージ本文" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={4} placeholder="このセグメント向けのメッセージ本文（テキスト）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+            <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="画像URL（任意・テキストと一緒に配信）" className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+            {imageUrl.trim() && <img src={imageUrl} alt="プレビュー" className="max-h-32 rounded-lg border border-gray-200" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }} />}
             <button onClick={send} disabled={!message.trim() || !preview || busy} className="w-full py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#A8842F' }}>
               {preview ? `この${preview.count}件に配信` : '配信（先に試算）'}
             </button>

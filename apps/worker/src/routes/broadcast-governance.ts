@@ -121,11 +121,12 @@ broadcastGovernance.post('/api/broadcast-requests', async (c) => {
   if (ids === null) return c.json({ error: 'この配信範囲を起案する権限がありません' }, 403);
   const aud = await audience(c.env.DB, ids);
   const id = crypto.randomUUID();
+  const imageUrl = (b.imageUrl ?? '').toString().trim() || null;
   await c.env.DB.prepare(
     `INSERT INTO broadcast_requests
-       (id,title,message,scope,area_id,line_account_id,target_count,excluded_count,per_store,status,proposed_by,proposed_layer,created_at)
-     VALUES (?,?,?,?,?,?,?,?,?, 'pending', ?, ?, ?)`,
-  ).bind(id, title, message, b.scope, b.areaId ?? null, b.lineAccountId ?? null, aud.target, aud.excluded, JSON.stringify(aud.perStore), actor(c), org.layer, jstNow()).run();
+       (id,title,message,image_url,scope,area_id,line_account_id,target_count,excluded_count,per_store,status,proposed_by,proposed_layer,created_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?, 'pending', ?, ?, ?)`,
+  ).bind(id, title, message, imageUrl, b.scope, b.areaId ?? null, b.lineAccountId ?? null, aud.target, aud.excluded, JSON.stringify(aud.perStore), actor(c), org.layer, jstNow()).run();
   return c.json({ id, status: 'pending', ...aud });
 });
 
