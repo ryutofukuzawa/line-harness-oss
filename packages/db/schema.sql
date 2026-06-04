@@ -885,3 +885,18 @@ CREATE TABLE IF NOT EXISTS staff_store_assignments (
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours')),
   PRIMARY KEY (staff_id, line_account_id)
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: セグメント配信（中間レイヤー / 店舗カウンセラー実行）
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS segment_casts (
+  id              TEXT PRIMARY KEY,
+  line_account_id TEXT NOT NULL,
+  message         TEXT NOT NULL,
+  filters         TEXT,
+  target_count    INTEGER NOT NULL DEFAULT 0,
+  sent_by         TEXT,
+  status          TEXT NOT NULL DEFAULT 'sent',
+  created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
+);
+CREATE INDEX IF NOT EXISTS idx_segment_casts_account ON segment_casts (line_account_id, created_at);
