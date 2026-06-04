@@ -854,3 +854,24 @@ CREATE TABLE IF NOT EXISTS risk_alerts (
   created_at      TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours'))
 );
 CREATE INDEX IF NOT EXISTS idx_risk_alerts_status ON risk_alerts (status, created_at);
+
+-- ─────────────────────────────────────────────────────────────
+-- プロラボ独自: 全店横断 一斉配信の承認ガバナンス
+-- 起案(pending) → 承認(approved)/却下(rejected) → 送信(sent)
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS broadcast_requests (
+  id             TEXT PRIMARY KEY,
+  title          TEXT NOT NULL,
+  message        TEXT NOT NULL,
+  scope          TEXT NOT NULL DEFAULT 'all',     -- 'all' = 全店横断
+  target_count   INTEGER NOT NULL DEFAULT 0,      -- ドライラン時の送信対象数
+  excluded_count INTEGER NOT NULL DEFAULT 0,      -- 頻度上限で除外した数
+  per_store      TEXT,                            -- 店舗別内訳(JSON)
+  status         TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','rejected','sent')),
+  proposed_by    TEXT,
+  approved_by    TEXT,
+  created_at     TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%f', 'now', '+9 hours')),
+  decided_at     TEXT,
+  sent_at        TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_broadcast_requests_status ON broadcast_requests (status, created_at);
