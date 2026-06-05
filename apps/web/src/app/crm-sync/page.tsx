@@ -39,6 +39,7 @@ function parseCsv(text: string): { key: string; attrs: Record<string, unknown> }
 
 export default function CrmSyncPage() {
   const [keyField, setKeyField] = useState<'sf_id' | 'phone' | 'line_user_id'>('sf_id')
+  const [tagFrom, setTagFrom] = useState('')
   const [csv, setCsv] = useState(SAMPLE_CSV)
   const [preview, setPreview] = useState<{ total: number; matched: number; unmatched: number; sample: { name: string; attrs: Record<string, unknown> }[] } | null>(null)
   const [busy, setBusy] = useState(false)
@@ -62,8 +63,8 @@ export default function CrmSyncPage() {
     if (!rows.length) return
     setBusy(true)
     try {
-      const r = await call('/api/crm-sync', { method: 'POST', body: JSON.stringify({ keyField, rows, source: 'csv' }) })
-      setFlash(`取込完了：${r.matched}件を更新（未一致 ${r.unmatched}件）`)
+      const r = await call('/api/crm-sync', { method: 'POST', body: JSON.stringify({ keyField, rows, source: 'csv', tagFrom: tagFrom.trim() || undefined }) })
+      setFlash(`取込完了：${r.matched}件を更新（未一致 ${r.unmatched}件）` + (r.tagged ? `／タグ付与 ${r.tagged}件・タグ${r.tagsCreated}種` : ''))
       setPreview(null); loadStatus()
       setTimeout(() => setFlash(null), 5000)
     } finally { setBusy(false) }
@@ -106,6 +107,10 @@ export default function CrmSyncPage() {
             </label>
             <textarea value={csv} onChange={(e) => { setCsv(e.target.value); setPreview(null) }} rows={7} className="w-full text-xs font-mono border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
             <p className="text-[11px] text-gray-400">1行目=ヘッダ（1列目に突合キー、以降に tantou / course / ltv 等）。数値はそのまま格納。</p>
+            <label className="text-xs text-gray-500 block">購入商品でタグ分け：タグ化する列名（任意）
+              <input value={tagFrom} onChange={(e) => setTagFrom(e.target.value)} placeholder="例: course（その列の値を「購入:◯◯」タグとして付与）" className="mt-1 w-full text-sm border border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-blue-500" />
+            </label>
+            <p className="text-[11px] text-gray-400">指定すると、その列の値ごとに「購入:◯◯」タグを作成し該当顧客に付与（セグメント配信のタグ条件で使えます）。</p>
             <div className="flex gap-2">
               <button onClick={runPreview} disabled={busy} className="flex-1 py-2 rounded-lg border border-blue-500 text-blue-700 text-sm font-medium hover:bg-blue-50 disabled:opacity-40">② 照合プレビュー</button>
               <button onClick={apply} disabled={busy || !preview} className="flex-1 py-2 rounded-lg text-white text-sm font-medium disabled:opacity-40" style={{ backgroundColor: '#A8842F' }}>③ 取込実行</button>

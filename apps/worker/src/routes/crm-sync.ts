@@ -50,14 +50,26 @@ crmSync.post('/api/crm-sync/preview', requireRole('owner', 'admin'), async (c) =
   return c.json({ total: rows.length, matched, unmatched: rows.length - matched, sample, keyField });
 });
 
+/** タグ名→tag_id を取得（無ければ作成）。name はUNIQUEなのでOR IGNOREで重複防止。 */
+async function ensureTag(db: D1Database, name: string): Promise<string> {
+  await db.prepare(`INSERT OR IGNORE INTO tags (id, name, color) VALUES (?, ?, '#A8842F')`)
+    .bind(crypto.randomUUID(), name).run();
+  const row = await db.prepare(`SELECT id FROM tags WHERE name = ?`).bind(name).first<{ id: string }>();
+  return row!.id;
+}
+
 crmSync.post('/api/crm-sync', requireRole('owner', 'admin'), async (c) => {
-  const b = (await c.req.json().catch(() => ({}))) as { keyField?: KeyField; rows?: Row[]; source?: string };
+  const b = (await c.req.json().catch(() => ({}))) as { keyField?: KeyField; rows?: Row[]; source?: string; tagFrom?: string; tagPrefix?: string };
   const keyField = (b.keyField ?? 'sf_id') as KeyField;
   const rows = Array.isArray(b.rows) ? b.rows.slice(0, 2000) : [];
   if (!rows.length) return c.json({ error: 'rows required' }, 400);
+  const tagFrom = (b.tagFrom ?? '').toString().trim(); // タグ化する列名（例: course / product）
+  const tagPrefix = (b.tagPrefix ?? '購入:').toString();
 
   const findStmt = c.env.DB.prepare(matchSql(keyField));
   let matched = 0;
+  let tagged = 0;
+  const tagCache = new Map<string, string>();
   for (const r of rows) {
     if (!r.key || !r.attrs || typeof r.attrs !== 'object') continue;
     const hit = await findStmt.bind(String(r.key)).first<{ id: string }>();
@@ -67,6 +79,14 @@ crmSync.post('/api/crm-sync', requireRole('owner', 'admin'), async (c) => {
       .bind(JSON.stringify(r.attrs), jstNow(), hit.id)
       .run();
     matched++;
+    // 購入商品でタグ分け: 指定列の値からタグを作成・付与
+    if (tagFrom && r.attrs[tagFrom] != null && String(r.attrs[tagFrom]).trim()) {
+      const tagName = `${tagPrefix}${String(r.attrs[tagFrom]).trim()}`;
+      let tagId = tagCache.get(tagName);
+      if (!tagId) { tagId = await ensureTag(c.env.DB, tagName); tagCache.set(tagName, tagId); }
+      await c.env.DB.prepare(`INSERT OR IGNORE INTO friend_tags (friend_id, tag_id) VALUES (?, ?)`).bind(hit.id, tagId).run();
+      tagged++;
+    }
   }
   const staff = c.get('staff') as { name?: string } | undefined;
   await c.env.DB.prepare(
@@ -74,7 +94,7 @@ crmSync.post('/api/crm-sync', requireRole('owner', 'admin'), async (c) => {
   )
     .bind(crypto.randomUUID(), b.source ?? 'csv', keyField, matched, rows.length - matched, staff?.name ?? 'Owner', jstNow())
     .run();
-  return c.json({ matched, unmatched: rows.length - matched });
+  return c.json({ matched, unmatched: rows.length - matched, tagged, tagsCreated: tagCache.size });
 });
 
 crmSync.get('/api/crm-sync/status', requireRole('owner', 'admin'), async (c) => {
